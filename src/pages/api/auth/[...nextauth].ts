@@ -8,6 +8,7 @@ const prisma = new PrismaClient();
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
+  debug: true,
   session: {
     strategy: "jwt",
   },
@@ -20,7 +21,7 @@ export default NextAuth({
 
   callbacks: {
     signIn: async ({ user }: any) => {
-      return !!user?.authorizated;
+      return !!user?.authorizated ? "/dashboard/start" : false;
     },
   },
 });

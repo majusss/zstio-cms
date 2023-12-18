@@ -1,14 +1,16 @@
 import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
 import React from "react";
+import MessagesHandler from "@/components/MessagesHandler";
+import prisma, { PrismaClient } from "@prisma/client";
 
-const Start: React.FC = () => {
+export default function start() {
   return (
-    <div>
-      <h1>Welcome to the Start page!</h1>
+    <div className="w-screen h-screen bg-black">
+      <MessagesHandler />
     </div>
   );
-};
+}
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -24,9 +26,11 @@ export const getServerSideProps = async (
     };
   }
 
+  const prisma = new PrismaClient();
+
   return {
-    props: {},
+    props: {
+      messages: await prisma.message.findMany(),
+    },
   };
 };
-
-export default Start;

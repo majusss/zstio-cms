@@ -8,15 +8,15 @@ datasource db {
 }
 
 model User {
-  id                 String              @id @default(auto()) @map("_id") @db.ObjectId
-  name               String?
-  email              String?             @unique
-  emailVerified      Boolean?
-  authorizated       Boolean?            @default(false)
-  image              String?
-  password           String?
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?  @unique
+  emailVerified Boolean?
+  authorizated  Boolean? @default(false)
+  image         String?
+  password      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   accounts Account[]
 }
@@ -38,4 +38,34 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+}
+
+model Message {
+  id          String             @id @default(auto()) @map("_id") @db.ObjectId
+  message     String?
+  published   Boolean            @default(false)
+  date        DateTime           @default(now())
+  type        MessageType        @default(INFO)
+  displayType MessageTypeDisplay @default(BANNER)
+  toUrl       String?
+  redirectUrl String?
+  displayTime TimeRange?
+}
+
+type TimeRange {
+  from DateTime
+  to   DateTime
+}
+
+enum MessageTypeDisplay {
+  POPUP
+  BANNER
+}
+
+enum MessageType {
+  INFO
+  UPDATE
+  WARNING
+  ERROR
+  SILENT
 }
