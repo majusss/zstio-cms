@@ -1,36 +1,18 @@
-import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
 import React from "react";
 import MessagesHandler from "@/components/MessagesHandler";
-import prisma, { PrismaClient } from "@prisma/client";
+import { redirect } from "next/navigation";
 
-export default function start() {
+export default function Start() {
+  const session = getSession();
+
+  if (!session) {
+    redirect("/api/auth/signin");
+  }
+
   return (
     <div className="w-screen h-screen bg-black">
       <MessagesHandler />
     </div>
   );
 }
-
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/api/auth/signin",
-        permanent: false,
-      },
-    };
-  }
-
-  const prisma = new PrismaClient();
-
-  return {
-    props: {
-      messages: await prisma.message.findMany(),
-    },
-  };
-};
