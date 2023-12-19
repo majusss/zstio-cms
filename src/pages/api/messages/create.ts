@@ -12,7 +12,7 @@ export default async function handler(
     return res.status(401).json({ messages: [], error: "Unauthorized" });
   }
 
-  await prisma.message.create({ data: { message: "eoeo" } });
+  await prisma.message.create({ data: { content: "eoeo" } } as any);
 
   res.status(200).json({ success: true });
 }
