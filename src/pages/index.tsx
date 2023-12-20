@@ -13,9 +13,9 @@ function Home() {
     setError(message);
   }, [message]);
   return (
-    <div className="bg-[#010101] h-screen flex justify-center flex-col items-center text-gray-50">
+    <div className="bg-[#010101] h-screen overflow-hidden flex justify-center flex-col items-center text-gray-50">
       <h1 className="text-2xl font-semibold">ZSTIO CMS</h1>
-      <p>
+      <p className="text-center mx-2">
         © {new Date().getFullYear()} Made with ❤️ for ZSTiO by Szymański Paweł &
         Majcher Kacper
       </p>
