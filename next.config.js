@@ -5,7 +5,7 @@ const nextConfig = {
       {
         source: "/",
         destination: "/api/auth/signin",
-        permanent: true,
+        permanent: false,
       },
     ];
   },
