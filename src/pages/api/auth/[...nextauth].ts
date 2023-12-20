@@ -7,7 +7,7 @@ import prisma from "@/utils/db";
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
-  debug: true,
+  debug: process.env.NODE_ENV === "production" ? false : true,
   session: {
     strategy: "jwt",
   },
@@ -18,9 +18,14 @@ export default NextAuth({
     }),
   ],
 
-  // callbacks: {
-  //   signIn: async ({ user }: any) => {
-  //     return !!user?.authorizated ? "/dashboard/start" : false;
-  //   },
-  // },
+  pages: {
+    signIn: "/",
+    error: "/",
+  },
+
+  callbacks: {
+    signIn: async ({ user }: any) => {
+      return user?.authorizated;
+    },
+  },
 });

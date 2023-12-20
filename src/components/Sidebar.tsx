@@ -65,7 +65,7 @@ export default function Sidebar() {
       <div className="sticky inset-x-0 bottom-0 border-t border-[#242424] bg-[#121212] p-2">
         <ArrowLeftEndOnRectangleIcon
           onClick={() => {
-            signOut();
+            signOut({ callbackUrl: "/" });
           }}
           className="cursor-pointer relative flex justify-center rounded px-2 py-1.5 text-gray-200 hover:bg-indigo-200 hover:text-gray-700"
         />
