@@ -8,7 +8,7 @@ import {
 import axios from "axios";
 import React, { Fragment, useState } from "react";
 
-const messageTypes = [
+const messageTypes: { value: MessageType }[] = [
   { value: "INFO" },
   { value: "WARNING" },
   { value: "ERROR" },
@@ -16,7 +16,10 @@ const messageTypes = [
   { value: "UPDATE" },
 ];
 
-const messageDisplayTypes = [{ value: "POPUP" }, { value: "BANNER" }];
+const messageDisplayTypes: { value: MessageTypeDisplay }[] = [
+  { value: "POPUP" },
+  { value: "BANNER" },
+];
 
 function AddMessage({ reloadData }: { reloadData: any }) {
   const [showModal, setShowModal] = useState(false);
@@ -29,11 +32,27 @@ function AddMessage({ reloadData }: { reloadData: any }) {
   const [message, setMessage] = useState("");
   const [redirectUrl, setRedirectUrl] = useState("");
   const [displayUrl, setDisplayUrl] = useState("");
+  const [hourFrom, setHourFrom] = useState("");
+  const [hourTo, setHourTo] = useState("");
+  const [inAction, setInAction] = useState(false);
+
+  const closeModal = () => {
+    setMessage("");
+    setRedirectUrl("");
+    setDisplayUrl("");
+    setShowModal(false);
+  };
 
   const addMessage = async () => {
     if (!message || !selectedMessageType || !selectedDisplayType) {
-      return;
+      return toastError("Wypełnij wszystkie pola");
     }
+
+    if ((hourFrom && !hourTo) || (!hourFrom && hourTo)) {
+      return toastError("Błędny przedział czasowy");
+    }
+
+    setInAction(true);
 
     try {
       await axios.put("/api/messages", {
@@ -42,23 +61,40 @@ function AddMessage({ reloadData }: { reloadData: any }) {
         displayType: selectedDisplayType.value,
         toUrl: displayUrl,
         redirectUrl: redirectUrl,
+        displayTime:
+          hourFrom && hourTo
+            ? {
+                from: new Date(
+                  new Date().setHours(
+                    +hourFrom.split(":")[0],
+                    +hourFrom.split(":")[1]
+                  )
+                ).toISOString(),
+                to: new Date(
+                  new Date().setHours(
+                    +hourTo.split(":")[0],
+                    +hourTo.split(":")[1]
+                  )
+                ).toISOString(),
+              }
+            : null,
       });
-      setShowModal(false);
+      setInAction(false);
+      closeModal();
       reloadData();
       toastSuccess("Dodano wiadomość");
     } catch (error) {
-      toastError("Wystąpił błąd podczas usuwania wiadomości (sprawdź konsolę)");
+      setInAction(false);
+      toastError(
+        "Wystąpił błąd podczas dodawania wiadomości (sprawdź konsolę)"
+      );
       console.error(error);
     }
   };
   return (
     <>
       <Transition appear show={showModal} as={Fragment}>
-        <Dialog
-          as="div"
-          className="relative z-10"
-          onClose={() => setShowModal(false)}
-        >
+        <Dialog as="div" className="relative z-10" onClose={() => closeModal()}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -121,7 +157,7 @@ function AddMessage({ reloadData }: { reloadData: any }) {
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
                           >
-                            <Listbox.Options className="mt-1 max-h-20 w-full overflow-auto rounded-md bg-[#191919] py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                            <Listbox.Options className="absolute mt-1 max-h-20 w-full overflow-auto rounded-md bg-[#191919] py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
                               {messageDisplayTypes.map((type, index) => (
                                 <Listbox.Option
                                   key={index}
@@ -183,7 +219,7 @@ function AddMessage({ reloadData }: { reloadData: any }) {
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
                           >
-                            <Listbox.Options className="mt-1 max-h-20 w-full overflow-auto rounded-md bg-[#191919] py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                            <Listbox.Options className="absolute mt-1 max-h-20 w-full overflow-auto rounded-md bg-[#191919] py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
                               {messageTypes.map((type, index) => (
                                 <Listbox.Option
                                   key={index}
@@ -224,6 +260,7 @@ function AddMessage({ reloadData }: { reloadData: any }) {
                         </div>
                       </Listbox>
                     </div>
+
                     <input
                       type="text"
                       className="py-3 mb-2 px-4 block w-full border-[#191919] bg-[#191919] text-gray-50 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
@@ -242,11 +279,38 @@ function AddMessage({ reloadData }: { reloadData: any }) {
                       }}
                     />
 
-                    <div className="flex justify-center"></div>
+                    <div className="flex justify-between flex-col">
+                      <p className="text-gray-300 ml-1">
+                        Czas wyświetlania (opcjonalnie)
+                      </p>
+                      <div className="flex">
+                        <div className="mt-1 w-1/2 mr-1">
+                          <input
+                            type="time"
+                            className="py-3 mb-2 px-4 block w-full border-[#191919] bg-[#191919] text-gray-50 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                            placeholder="Od (HH:MM)"
+                            onChange={(e) => {
+                              setHourFrom(e.currentTarget.value);
+                            }}
+                          />
+                        </div>
+                        <div className="mt-1 w-1/2 ml-1">
+                          <input
+                            type="time"
+                            className="py-3 mb-2 px-4 block w-full border-[#191919] bg-[#191919] text-gray-50 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                            placeholder="Do (HH:MM)"
+                            onChange={(e) => {
+                              setHourTo(e.currentTarget.value);
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="mt-4">
+                  <div className="flex justify-end mt-4">
                     <button
+                      disabled={inAction}
                       type="button"
                       onClick={addMessage}
                       className="inline-flex mr-2 justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
@@ -257,7 +321,7 @@ function AddMessage({ reloadData }: { reloadData: any }) {
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={() => {
-                        setShowModal(false);
+                        closeModal();
                       }}
                     >
                       Anuluj

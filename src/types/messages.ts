@@ -10,7 +10,7 @@ type Message = {
   id?: string;
   message?: string;
   published: boolean;
-  date: TimeRange;
+  date: Date;
   type: MessageType;
   displayType: MessageTypeDisplay;
   toUrl?: string;

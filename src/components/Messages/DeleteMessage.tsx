@@ -14,17 +14,22 @@ function DeleteMessage({
   reloadData: any;
   id?: string;
 }) {
+  const [inAction, setInAction] = useState(false);
+
   const deleteMessage = async () => {
+    setInAction(true);
     try {
       await axios.delete(`/api/messages`, {
         data: {
           messageId: id,
         },
       });
+      setInAction(false);
       setIsOpen(false);
       reloadData();
       toastSuccess("Wiadomość została usunięta");
     } catch (error) {
+      setInAction(false);
       toastError("Wystąpił błąd podczas usuwania wiadomości (sprawdź konsolę)");
       console.error(error);
     }
@@ -73,8 +78,9 @@ function DeleteMessage({
                   </p>
                 </div>
 
-                <div className="mt-4">
+                <div className="flex justify-end mt-4">
                   <button
+                    disabled={inAction}
                     type="button"
                     className="inline-flex mr-2 justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
                     onClick={deleteMessage}

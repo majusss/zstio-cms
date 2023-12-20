@@ -89,7 +89,13 @@ export default function MessagesHandler() {
                               open ? "text-indigo-500" : "text-gray-50"
                             }`}
                           >
-                            {message.message}
+                            <p>
+                              <span className="text-gray-300">
+                                {message.id} -{" "}
+                              </span>
+
+                              {message.message}
+                            </p>
                             <ChevronUpIcon
                               className={`${
                                 open ? "rotate-180 transform" : ""
