@@ -1,6 +1,7 @@
 import { getSession } from "next-auth/react";
 import Sidebar from "./Sidebar";
 import { redirect } from "next/navigation";
+import PrelineScript from "./PrelineScript";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const session = getSession();
@@ -8,10 +9,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   if (!session) {
     redirect("/api/auth/signin");
   }
+
   return (
-    <div className="min-h-screen bg-[#010101]">
+    <div className="h-screen overflow-hidden bg-[#010101] flex">
+      <PrelineScript />
       <Sidebar />
-      {children}
+      <div className="overflow-y-scroll w-full">{children}</div>
     </div>
   );
 }

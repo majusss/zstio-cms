@@ -1,11 +1,19 @@
+type MessageType = "INFO" | "UPDATE" | "WARNING" | "ERROR" | "SILENT";
+type MessageTypeDisplay = "POPUP" | "BANNER";
+
+type TimeRange = {
+  from: string;
+  to: string;
+};
+
 type Message = {
-  displayTime: null | string;
-  id: string;
-  message: string;
+  id?: string;
+  message?: string;
   published: boolean;
-  date: string;
-  type: string;
-  displayType: string;
-  toUrl: null | string;
-  redirectUrl: null | string;
+  date: TimeRange;
+  type: MessageType;
+  displayType: MessageTypeDisplay;
+  toUrl?: string;
+  redirectUrl?: string;
+  displayTime?: TimeRange;
 };

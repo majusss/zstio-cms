@@ -18,9 +18,9 @@ export default NextAuth({
     }),
   ],
 
-  callbacks: {
-    signIn: async ({ user }: any) => {
-      return !!user?.authorizated ? "/dashboard/start" : false;
-    },
-  },
+  // callbacks: {
+  //   signIn: async ({ user }: any) => {
+  //     return !!user?.authorizated ? "/dashboard/start" : false;
+  //   },
+  // },
 });

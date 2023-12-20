@@ -26,7 +26,7 @@ export default function Sidebar() {
 
   const isActive = (path: string) => {
     return router.pathname === path
-      ? "bg-indigo-200 text-gray-700 hover:text-gray-900"
+      ? "bg-indigo-600 text-white hover:bg-indigo-700"
       : "text-gray-200";
   };
 
@@ -38,7 +38,7 @@ export default function Sidebar() {
             <div className="py-4">
               <Link href="/dashboard/start">
                 <HomeIcon
-                  className={`cursor-pointer relative flex justify-center rounded px-2 py-1.5 hover:text-gray-400 ${isActive(
+                  className={`cursor-pointer relative flex justify-center rounded px-2 py-1.5 hover:text-gray-50 ${isActive(
                     "/dashboard/start"
                   )}`}
                 />
@@ -50,7 +50,7 @@ export default function Sidebar() {
                 <li key={item.name}>
                   <Link href={item.path}>
                     <item.icon
-                      className={`cursor-pointer relative flex justify-center rounded px-2 py-1.5 hover:text-gray-400 ${isActive(
+                      className={`cursor-pointer relative flex justify-center rounded px-2 py-1.5 hover:text-gray-50 ${isActive(
                         item.path
                       )}`}
                     />

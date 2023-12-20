@@ -1,9 +1,0 @@
-import prisma from "@/utils/db";
-import { NextApiRequest, NextApiResponse } from "next";
-
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  res.status(200).json({ messages: await prisma.message.findMany() });
-}
