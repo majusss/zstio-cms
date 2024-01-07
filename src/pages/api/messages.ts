@@ -10,13 +10,12 @@ export default async function handler(
     case "GET":
       try {
         const messages = await prisma.message.findMany({});
-
-        return res
-          .status(200)
-          .json({
-            success: true,
-            messages: messages?.filter((message) => message.published) || [],
-          });
+        return res.status(200).json({
+          success: true,
+          messages: req?.query?.force
+            ? messages
+            : messages.filter((message) => message.published),
+        });
       } catch (error) {
         return res.status(500).json({ success: false, messages: [], error });
       }
@@ -47,7 +46,6 @@ export default async function handler(
           messages: [await prisma.message.findMany({})],
         });
       } catch (error) {
-        console.log(error);
         return res.status(500).json({ success: false, messages: [], error });
       }
       break;

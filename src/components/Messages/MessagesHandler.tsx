@@ -13,9 +13,8 @@ export default function MessagesHandler() {
 
   const getData = async () => {
     try {
-      const request = await axios.get("/api/messages");
+      const request = await axios.get("/api/messages?force=true");
 
-      console.log(request.data);
       setData(request.data.messages);
     } catch (error) {
       console.error(error);
@@ -31,7 +30,6 @@ export default function MessagesHandler() {
     id: string | undefined,
     visibility: boolean
   ) => {
-    console.log(visibility);
     try {
       const req = await axios.patch("/api/messages", {
         messageId: id,
