@@ -10,7 +10,13 @@ export default async function handler(
     case "GET":
       try {
         const messages = await prisma.message.findMany({});
-        return res.status(200).json({ success: true, messages });
+
+        return res
+          .status(200)
+          .json({
+            success: true,
+            messages: messages?.filter((message) => message.published) || [],
+          });
       } catch (error) {
         return res.status(500).json({ success: false, messages: [], error });
       }
