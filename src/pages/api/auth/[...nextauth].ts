@@ -1,8 +1,8 @@
-import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import NextAuth from "next-auth";
 
-import GitHubProvider from "next-auth/providers/github";
 import prisma from "@/utils/db";
+import GitHubProvider from "next-auth/providers/github";
 
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
@@ -25,7 +25,10 @@ export default NextAuth({
 
   callbacks: {
     signIn: async ({ user }: any) => {
-      return user?.authorizated;
+      return (
+        (await prisma.access.findMany({ where: { email: user?.email } }))
+          .length > 0
+      );
     },
   },
 });

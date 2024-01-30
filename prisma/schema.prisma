@@ -12,7 +12,6 @@ model User {
   name          String?
   email         String?  @unique
   emailVerified Boolean?
-  authorizated  Boolean? @default(false)
   image         String?
   password      String?
   createdAt     DateTime @default(now())
@@ -38,6 +37,11 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+}
+
+model Access {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  email String @unique
 }
 
 model Message {
