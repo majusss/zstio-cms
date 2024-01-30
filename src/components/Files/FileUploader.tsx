@@ -6,12 +6,10 @@ export default function FileUploader({
   image,
   blob,
   setSelectedImages,
-  updateHostedImgs,
 }: {
   image: File;
   blob: string;
   setSelectedImages: any;
-  updateHostedImgs: () => void;
 }) {
   const [name, setName] = useState(image.name);
   const [progrss, setProgrss] = useState<number | null>(null);
@@ -59,7 +57,6 @@ export default function FileUploader({
                     return pre.filter((img) => img.blob !== blob);
                   });
 
-                  updateHostedImgs();
                 }}
               >
                 SAVE

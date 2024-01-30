@@ -6,12 +6,10 @@ export default function FilePreview({
   name,
   img,
   id,
-  updateHostedImgs,
 }: {
   name: string;
   img: string;
   id: string;
-  updateHostedImgs: () => void;
 }) {
   return (
     <div className="flex flex-col border-2 rounded-lg border-white w-52 h-52 bg-[#202020] justify-around">
@@ -34,7 +32,6 @@ export default function FilePreview({
               } catch (error) {
                 toastError("Nie udało się usunąć pliku");
               }
-              updateHostedImgs();
             }}
             className="m-2 p-2 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
           >

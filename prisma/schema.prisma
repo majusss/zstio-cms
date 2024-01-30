@@ -83,9 +83,9 @@ model Settings {
 }
 
 model Galery {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  title    String
-  filename String
-  url      String
-  shown    Boolean @default(false)
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  deleteHash String
+  url        String
+  shown      Boolean @default(false)
 }

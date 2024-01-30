@@ -5,28 +5,18 @@ import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import AddFileComponent from "./AddFileComponent";
 import FilePreview from "./FilePreview";
 import FileUploader from "./FileUploader";
+import useSWR from "swr";
+
+const fetchFiles = async (): Promise<{ id: string; title: string; filename: string; url: string }[]> => {
+  return (await axios.get("/api/uploads")).data.files;
+}
 
 export default function FilesHandler() {
   const [selectedImages, setSelectedImages] = useState<
     { file: File; blob: string }[]
   >([]);
 
-  const [hostedImgs, setHostedImgs] = useState<
-    { id: string; title: string; filename: string; url: string }[]
-  >([]);
-
-  const updateHostedImgs = useCallback(async () => {
-    try {
-      const request = await axios.get("/api/uploads");
-      setHostedImgs(request.data.files);
-    } catch (error) {
-      toastError("Nie udało się pobrać listy plików");
-    }
-  }, []);
-
-  useEffect(() => {
-    updateHostedImgs();
-  }, [updateHostedImgs]);
+  const { data: hostedImgs, error } = useSWR("/api/uploads", fetchFiles, { onError: (err) => toastError(err), refreshWhenHidden: false, refreshInterval: 1000 });
 
   const onDrop: <T extends File>(
     acceptedFiles: T[],
@@ -43,6 +33,8 @@ export default function FilesHandler() {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
+  if (hostedImgs?.length == null) return null
+
   return (
     <div className="text-white w-full h-full">
       <div className="w-full bg-[#121212] text-center sticky">
@@ -58,11 +50,6 @@ export default function FilesHandler() {
                 id={img.id}
                 name={img.title}
                 img={img.url}
-                updateHostedImgs={() => {
-                  setTimeout(() => {
-                    updateHostedImgs();
-                  }, 1000);
-                }}
               />
             ))}
           {selectedImages?.length > 0 &&
@@ -72,11 +59,6 @@ export default function FilesHandler() {
                 blob={image.blob}
                 image={image.file}
                 setSelectedImages={setSelectedImages}
-                updateHostedImgs={() => {
-                  setTimeout(() => {
-                    updateHostedImgs();
-                  }, 1000);
-                }}
               />
             ))}
           <div {...getRootProps()}>
