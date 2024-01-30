@@ -1,11 +1,12 @@
 import React from "react";
 import Layout from "@/components/Layout";
 import { authentication } from "@/utils/authentication";
+import SettingsHandler from "@/components/Settings/SettingsHandler";
 
-export default function Settings() {
+export default function Tv() {
   return (
     <Layout>
-      <></>
+      <SettingsHandler />
     </Layout>
   );
 }

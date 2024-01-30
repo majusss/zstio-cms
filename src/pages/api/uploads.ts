@@ -1,0 +1,83 @@
+import prisma from "@/utils/db";
+import { addFile, removeFile } from "@/utils/manage-cdn";
+import formidable from "formidable";
+import fs from "fs";
+import { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth";
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  switch (req.method) {
+    case "GET":
+      const files = await prisma.galery.findMany();
+      return res.status(200).json({ success: true, files });
+      break;
+    case "POST":
+      const sessionPOST = await getServerSession(req, res, {});
+
+      if (!sessionPOST) {
+        return res.status(401).json({ hint: {}, error: "Unauthorized" });
+      }
+
+      const form = formidable({});
+      const [fields, filesIn] = await form.parse(req);
+
+      if (
+        filesIn.file &&
+        fields.name?.toString() &&
+        filesIn.file[0].originalFilename?.toString()
+      ) {
+        addFile(
+          fields.name?.toString(),
+          filesIn.file[0].originalFilename?.toString(),
+          await fs.readFileSync(filesIn.file[0].filepath),
+        );
+        return res.status(200).json({ suceess: true });
+      } else {
+        return res.status(400).json({ error: "Bad request" });
+      }
+      break;
+    case "PATCH":
+      const sessionPATCH = await getServerSession(req, res, {});
+
+      if (!sessionPATCH) {
+        return res.status(401).json({ hint: {}, error: "Unauthorized" });
+      }
+
+      const formPATCH = formidable({});
+      const [fieldsPATCH] = await formPATCH.parse(req);
+      const { id, title, show } = fieldsPATCH;
+
+      if (!id || !title || !show)
+        return res.status(400).json({ success: false, error: "Bad request" });
+
+      const galeryPOST = await prisma.galery.updateMany({
+        where: { id: id.toString() },
+        data: { title: title.toString(), shown: show.toString() == "true" },
+      });
+
+      return res.status(200).json({ success: true, galery: galeryPOST });
+      break;
+    case "DELETE":
+      const sessionDELETE = await getServerSession(req, res, {});
+
+      if (!sessionDELETE) {
+        return res.status(401).json({ hint: {}, error: "Unauthorized" });
+      }
+
+      if (!req?.query?.id)
+        return res.status(400).json({ error: "Bad request" });
+
+      removeFile(req.query.id.toString());
+
+      return res.status(200).json({ success: true });
+  }
+}
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};

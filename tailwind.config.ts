@@ -7,7 +7,13 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/preline/preline.js",
   ],
-  theme: {},
+  theme: {
+    extend: {
+      gridTemplateColumns: {
+        imgs: "repeat(auto-fit, minmax(210px, 1px))",
+      },
+    },
+  },
   plugins: [require("preline/plugin")],
 };
 export default config;

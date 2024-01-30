@@ -2,7 +2,9 @@ import {
   ArrowLeftEndOnRectangleIcon,
   Cog6ToothIcon,
   EnvelopeIcon,
+  FolderIcon,
   HomeIcon,
+  TvIcon,
 } from "@heroicons/react/24/outline";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
@@ -15,9 +17,14 @@ const items = [
     path: "/dashboard/messages",
   },
   {
-    name: "Settings",
-    icon: Cog6ToothIcon,
-    path: "/dashboard/settings",
+    name: "Tv",
+    icon: TvIcon,
+    path: "/dashboard/tv",
+  },
+  {
+    name: "Files",
+    icon: FolderIcon,
+    path: "/dashboard/files",
   },
 ];
 

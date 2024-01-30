@@ -69,3 +69,23 @@ enum MessageType {
   ERROR
   SILENT
 }
+
+model Settings {
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  weatherApi     String?
+  showWeather    Boolean @default(false)
+  hintText       String?
+  showHint       Boolean @default(false)
+  spotifyRefresh String?
+  showSpotify    Boolean @default(false)
+  showGalery     Boolean @default(false)
+  showNews       Boolean @default(false)
+}
+
+model Galery {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  title    String
+  filename String
+  url      String
+  shown    Boolean @default(false)
+}

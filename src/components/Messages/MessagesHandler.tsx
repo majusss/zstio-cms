@@ -1,10 +1,10 @@
-import { ChevronUpIcon, PlusIcon } from "@heroicons/react/24/outline";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import DeleteMessage from "./DeleteMessage";
-import { Disclosure } from "@headlessui/react";
-import AddMessage from "./AddMessage";
 import { toastError, toastSuccess } from "@/utils/toasting";
+import { Disclosure } from "@headlessui/react";
+import { ChevronUpIcon } from "@heroicons/react/24/outline";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import AddMessage from "./AddMessage";
+import DeleteMessage from "./DeleteMessage";
 
 export default function MessagesHandler() {
   const [data, setData] = useState<Message[] | null>(null);
@@ -17,6 +17,7 @@ export default function MessagesHandler() {
 
       setData(request.data.messages);
     } catch (error) {
+      toastError("Wystąpił błąd podczas poierania danych");
       console.error(error);
     }
   };
@@ -28,7 +29,7 @@ export default function MessagesHandler() {
 
   const changeVisibility = async (
     id: string | undefined,
-    visibility: boolean
+    visibility: boolean,
   ) => {
     try {
       const req = await axios.patch("/api/messages", {
@@ -83,7 +84,7 @@ export default function MessagesHandler() {
                       {({ open }) => (
                         <>
                           <Disclosure.Button
-                            className={`flex w-full justify-between rounded-lg bg-[#202020] px-4 py-4 text-left text-sm font-medium hover:bg-[#181818] ${
+                            className={`flex w-full justify-between rounded-lg bg-[#202020] p-4 text-left text-sm font-medium hover:bg-[#181818] ${
                               open ? "text-indigo-500" : "text-gray-50"
                             }`}
                           >
@@ -199,7 +200,7 @@ export default function MessagesHandler() {
                                         onClick={() =>
                                           changeVisibility(
                                             message.id,
-                                            !message.published
+                                            !message.published,
                                           )
                                         }
                                         className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-indigo-600 hover:text-indigo-800 disabled:opacity-50 disabled:pointer-events-none dark:text-indigo-500 dark:hover:text-indigo-400"

@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   switch (req.method) {
     case "GET":
@@ -14,7 +14,7 @@ export default async function handler(
           success: true,
           messages: req?.query?.force
             ? messages
-            : messages.filter((message) => message.published),
+            : messages.filter((message: any) => message.published),
         });
       } catch (error) {
         return res.status(500).json({ success: false, messages: [], error });
@@ -56,6 +56,9 @@ export default async function handler(
         if (!session) {
           return res.status(401).json({ messages: [], error: "Unauthorized" });
         }
+
+        if (!("messageId" in req.body))
+          return res.status(400).json({ messages: [], error: "Bad request" });
 
         const messageId = req.body.messageId;
 
