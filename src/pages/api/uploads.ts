@@ -1,5 +1,166 @@
-import prisma from "@/utils/db";
-import { addFile, removeFile } from "@/utils/manage-cdn";
+/**
+ * @swagger
+ * /api/uploads:
+ *   get:
+ *     summary: Get all files
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 files:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       title:
+ *                         type: string
+ *                       deleteHash:
+ *                         type: string
+ *                       url:
+ *                         type: string
+ *                       shown:
+ *                         type: boolean
+ *       500:
+ *         description: Internal server error
+ *   post:
+ *     summary: Upload a file
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               file:
+ *                 type: file
+ *     responses:
+ *       200:
+ *         description: File uploaded successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *       400:
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 hint:
+ *                   type: object
+ *                 error:
+ *                   type: string
+ *   patch:
+ *     summary: Update a file
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *               title:
+ *                 type: string
+ *               show:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: File updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *       400:
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 error:
+ *                   type: string
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 hint:
+ *                   type: object
+ *                 error:
+ *                   type: string
+ *   delete:
+ *     summary: Delete a file
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: File deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *       400:
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 hint:
+ *                   type: object
+ *                 error:
+ *                   type: string
+ */
+import prisma from "@/lib/db";
+import { addFile, removeFile } from "@/lib/manage-cdn";
 import formidable from "formidable";
 import fs from "fs";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -12,6 +173,7 @@ export default async function handler(
   switch (req.method) {
     case "GET":
       const files = await prisma.galery.findMany();
+
       return res.status(200).json({ success: true, files });
       break;
     case "POST":
@@ -53,12 +215,12 @@ export default async function handler(
       if (!id || !title || !show)
         return res.status(400).json({ success: false, error: "Bad request" });
 
-      const galeryPOST = await prisma.galery.updateMany({
+      await prisma.galery.updateMany({
         where: { id: id.toString() },
         data: { title: title.toString(), shown: show.toString() == "true" },
       });
 
-      return res.status(200).json({ success: true, galery: galeryPOST });
+      return res.status(200).json({ success: true });
       break;
     case "DELETE":
       const sessionDELETE = await getServerSession(req, res, {});

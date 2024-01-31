@@ -1,4 +1,4 @@
-import { toastError, toastSuccess } from "@/utils/toasting";
+import { toastError, toastSuccess } from "@/lib/toasting";
 import axios from "axios";
 import { useEffect, useState } from "react";
 

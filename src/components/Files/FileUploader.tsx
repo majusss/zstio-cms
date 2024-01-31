@@ -1,4 +1,4 @@
-import { toastError, toastSuccess } from "@/utils/toasting";
+import { toastError, toastSuccess } from "@/lib/toasting";
 import axios from "axios";
 import { useState } from "react";
 
@@ -56,7 +56,6 @@ export default function FileUploader({
                   setSelectedImages((pre: { file: File; blob: string }[]) => {
                     return pre.filter((img) => img.blob !== blob);
                   });
-
                 }}
               >
                 SAVE

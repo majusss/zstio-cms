@@ -1,7 +1,7 @@
-import React, { Fragment, useState } from "react";
+import { toastError, toastSuccess } from "@/lib/toasting";
 import { Dialog, Transition } from "@headlessui/react";
 import axios from "axios";
-import { toastError, toastSuccess } from "@/utils/toasting";
+import { Fragment, useState } from "react";
 
 function DeleteMessage({
   isOpen,

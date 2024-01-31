@@ -1,4 +1,4 @@
-import { toastError, toastSuccess } from "@/utils/toasting";
+import { toastError, toastSuccess } from "@/lib/toasting";
 import { Dialog, Listbox, Transition } from "@headlessui/react";
 import {
   CheckIcon,
@@ -6,7 +6,7 @@ import {
   PlusIcon,
 } from "@heroicons/react/24/outline";
 import axios from "axios";
-import React, { Fragment, useState } from "react";
+import { Fragment, useState } from "react";
 
 const messageTypes: { value: MessageType }[] = [
   { value: "INFO" },
@@ -24,10 +24,10 @@ const messageDisplayTypes: { value: MessageTypeDisplay }[] = [
 function AddMessage({ reloadData }: { reloadData: any }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedDisplayType, setSelectedDisplayType] = useState(
-    messageDisplayTypes[0]
+    messageDisplayTypes[0],
   );
   const [selectedMessageType, setSelectedMessageType] = useState(
-    messageTypes[0]
+    messageTypes[0],
   );
   const [message, setMessage] = useState("");
   const [redirectUrl, setRedirectUrl] = useState("");
@@ -67,14 +67,14 @@ function AddMessage({ reloadData }: { reloadData: any }) {
                 from: new Date(
                   new Date().setHours(
                     +hourFrom.split(":")[0],
-                    +hourFrom.split(":")[1]
-                  )
+                    +hourFrom.split(":")[1],
+                  ),
                 ).toISOString(),
                 to: new Date(
                   new Date().setHours(
                     +hourTo.split(":")[0],
-                    +hourTo.split(":")[1]
-                  )
+                    +hourTo.split(":")[1],
+                  ),
                 ).toISOString(),
               }
             : null,
@@ -86,7 +86,7 @@ function AddMessage({ reloadData }: { reloadData: any }) {
     } catch (error) {
       setInAction(false);
       toastError(
-        "Wystąpił błąd podczas dodawania wiadomości (sprawdź konsolę)"
+        "Wystąpił błąd podczas dodawania wiadomości (sprawdź konsolę)",
       );
       console.error(error);
     }

@@ -1,7 +1,6 @@
-import React from "react";
-import Layout from "@/components/Layout";
-import { authentication } from "@/utils/authentication";
 import FilesHandler from "@/components/Files/FilesHandler";
+import Layout from "@/components/Layout";
+import { authentication } from "@/lib/authentication";
 
 export default function Files() {
   return (

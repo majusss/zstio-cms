@@ -1,4 +1,51 @@
-import prisma from "@/utils/db";
+/**
+ * @swagger
+ * /api/hint:
+ *   get:
+ *     summary: Get hint settings
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 hint:
+ *                   type: object
+ *                   properties:
+ *                     text:
+ *                       type: string
+ *                     show:
+ *                       type: boolean
+ *       500:
+ *         description: Internal server error
+ *   post:
+ *     summary: Update hint settings
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               hintText:
+ *                 type: string
+ *               showHint:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Success
+ *       401:
+ *         description: Unauthorized
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
+import prisma from "@/lib/db";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 

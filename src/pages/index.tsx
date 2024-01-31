@@ -1,23 +1,22 @@
 import { signIn } from "next-auth/react";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 function Home() {
   const router = useRouter();
   const { error: message } = router.query;
   const [error, setError] = useState<string | string[] | null | undefined>(
-    null
+    null,
   );
   useEffect(() => {
     setError(message);
   }, [message]);
   return (
-    <div className="bg-[#010101] h-screen overflow-hidden flex justify-center flex-col items-center text-gray-50">
+    <div className="bg-[#010101] h-screen overflow-hidden text-gray-50 text-center flex justify-center flex-col items-center">
       <h1 className="text-2xl font-semibold">ZSTIO CMS</h1>
-      <p className="text-center mx-2">
-        © {new Date().getFullYear()} Made with ❤️ for ZSTiO by Szymański Paweł &
-        Majcher Kacper
+      <p className="mx-2">
+        © {new Date().getFullYear()} Made with ❤️ for ZSTiO by Szymański Paweł
+        & Majcher Kacper
       </p>
       <button
         onClick={() => {
@@ -32,6 +31,9 @@ function Home() {
           Wystąpił błąd: <span>{Array.isArray(error) ? error[0] : error}</span>
         </div>
       )}
+      <div className="w-full bottom-10 hover:underline fixed">
+        <a href="api-doc">Przejdź do dokumentacji</a>
+      </div>
     </div>
   );
 }

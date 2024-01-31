@@ -1,7 +1,6 @@
-import React from "react";
 import Layout from "@/components/Layout";
 import MessagesHandler from "@/components/Messages/MessagesHandler";
-import { authentication } from "@/utils/authentication";
+import { authentication } from "@/lib/authentication";
 
 export default function Messages() {
   return (

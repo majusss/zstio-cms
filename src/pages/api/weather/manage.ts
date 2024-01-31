@@ -1,10 +1,76 @@
-import prisma from "@/utils/db";
+/**
+ * @swagger
+ * /api/weather/manage:
+ *   get:
+ *     summary: Get weather settings
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 weather:
+ *                   type: object
+ *                   properties:
+ *                     token:
+ *                       type: string
+ *                     show:
+ *                       type: boolean
+ *       500:
+ *         description: Internal server error
+ *   post:
+ *     summary: Update weather settings
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               showWeather:
+ *                 type: boolean
+ *               weatherApi:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Weather settings updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 weather:
+ *                   type: object
+ *                   properties:
+ *                     token:
+ *                       type: string
+ *                     show:
+ *                       type: boolean
+ *       401:
+ *         description: Unauthorized
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ *   default:
+ *     summary: Method not allowed
+ *     responses:
+ *       405:
+ *         description: Method not allowed
+ */
+import prisma from "@/lib/db";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   if (!(await prisma.settings.findFirst())) {
     await prisma.settings.create({

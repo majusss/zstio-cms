@@ -1,4 +1,180 @@
-import prisma from "@/utils/db";
+/**
+ * @swagger
+ * /api/messages:
+ *   get:
+ *     summary: Get all messages
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 messages:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       message:
+ *                         type: string
+ *                       published:
+ *                         type: boolean
+ *                       date:
+ *                         type: string
+ *                       type:
+ *                         type: string
+ *                       displayType:
+ *                         type: string
+ *                       toUrl:
+ *                         type: string
+ *                       redirectUrl:
+ *                         type: string
+ *                       displayTime:
+ *                         type: string
+ *       500:
+ *         description: Internal server error
+ *   put:
+ *     summary: Create a new message
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               message:
+ *                 type: string
+ *               published:
+ *                 type: boolean
+ *               date:
+ *                 type: string
+ *               type:
+ *                 type: string
+ *               displayType:
+ *                 type: string
+ *               toUrl:
+ *                 type: string
+ *               redirectUrl:
+ *                 type: string
+ *               displayTime:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Message created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 messages:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       message:
+ *                         type: string
+ *                       published:
+ *                         type: boolean
+ *                       date:
+ *                         type: string
+ *                       type:
+ *                         type: string
+ *                       displayType:
+ *                         type: string
+ *                       toUrl:
+ *                         type: string
+ *                       redirectUrl:
+ *                         type: string
+ *                       displayTime:
+ *                         type: string
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Internal server error
+ *   delete:
+ *     summary: Delete a message
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               messageId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Message deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *       401:
+ *         description: Unauthorized
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ *   patch:
+ *     summary: Update a message
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               messageId:
+ *                 type: string
+ *               message:
+ *                 type: string
+ *               published:
+ *                 type: boolean
+ *               date:
+ *                 type: string
+ *               type:
+ *                 type: string
+ *               displayType:
+ *                 type: string
+ *               toUrl:
+ *                 type: string
+ *               redirectUrl:
+ *                 type: string
+ *               displayTime:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Message updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Internal server error
+ */
+
+import prisma from "@/lib/db";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 

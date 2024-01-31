@@ -1,22 +1,28 @@
-import { toastError } from "@/utils/toasting";
+import { toastError } from "@/lib/toasting";
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
+import useSWR from "swr";
 import AddFileComponent from "./AddFileComponent";
 import FilePreview from "./FilePreview";
 import FileUploader from "./FileUploader";
-import useSWR from "swr";
 
-const fetchFiles = async (): Promise<{ id: string; title: string; filename: string; url: string }[]> => {
+const fetchFiles = async (): Promise<
+  { id: string; title: string; filename: string; url: string }[]
+> => {
   return (await axios.get("/api/uploads")).data.files;
-}
+};
 
 export default function FilesHandler() {
   const [selectedImages, setSelectedImages] = useState<
     { file: File; blob: string }[]
   >([]);
 
-  const { data: hostedImgs, error } = useSWR("/api/uploads", fetchFiles, { onError: (err) => toastError(err), refreshWhenHidden: false, refreshInterval: 1000 });
+  const { data: hostedImgs, error } = useSWR("/api/uploads", fetchFiles, {
+    onError: (err) => toastError(err),
+    refreshWhenHidden: false,
+    refreshInterval: 1000,
+  });
 
   const onDrop: <T extends File>(
     acceptedFiles: T[],
@@ -33,7 +39,7 @@ export default function FilesHandler() {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  if (hostedImgs?.length == null) return null
+  if (hostedImgs?.length == null) return null;
 
   return (
     <div className="text-white w-full h-full">

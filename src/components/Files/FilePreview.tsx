@@ -1,4 +1,4 @@
-import { toastError, toastSuccess } from "@/utils/toasting";
+import { toastError, toastSuccess } from "@/lib/toasting";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 
