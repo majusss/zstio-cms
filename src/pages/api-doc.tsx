@@ -7,6 +7,7 @@ const APIDocumentUI = dynamic<{
   layout?: "sidebar" | "stacked";
   router?: "history" | "memory" | "hash" | "static";
 }>(
+  // @ts-ignore
   import("@stoplight/elements").then(({ API }) => API),
   {
     ssr: false,
