@@ -33,7 +33,7 @@ export default function MessagesHandler() {
   ) => {
     try {
       const req = await axios.patch("/api/messages", {
-        messageId: id,
+        id,
         published: visibility,
       });
 

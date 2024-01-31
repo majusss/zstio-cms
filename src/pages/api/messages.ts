@@ -16,26 +16,7 @@
  *                 messages:
  *                   type: array
  *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: string
- *                       message:
- *                         type: string
- *                       published:
- *                         type: boolean
- *                       date:
- *                         type: string
- *                       type:
- *                         type: string
- *                       displayType:
- *                         type: string
- *                       toUrl:
- *                         type: string
- *                       redirectUrl:
- *                         type: string
- *                       displayTime:
- *                         type: string
+ *                     $ref: '#/components/schemas/Message'
  *       500:
  *         description: Internal server error
  *   put:
@@ -76,26 +57,7 @@
  *                 messages:
  *                   type: array
  *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: string
- *                       message:
- *                         type: string
- *                       published:
- *                         type: boolean
- *                       date:
- *                         type: string
- *                       type:
- *                         type: string
- *                       displayType:
- *                         type: string
- *                       toUrl:
- *                         type: string
- *                       redirectUrl:
- *                         type: string
- *                       displayTime:
- *                         type: string
+ *                     $ref: '#/components/schemas/Message'
  *       401:
  *         description: Unauthorized
  *       500:
@@ -109,7 +71,7 @@
  *           schema:
  *             type: object
  *             properties:
- *               messageId:
+ *               id:
  *                 type: string
  *     responses:
  *       200:
@@ -138,24 +100,9 @@
  *           schema:
  *             type: object
  *             properties:
- *               messageId:
+ *               id:
  *                 type: string
- *               message:
- *                 type: string
- *               published:
- *                 type: boolean
- *               date:
- *                 type: string
- *               type:
- *                 type: string
- *               displayType:
- *                 type: string
- *               toUrl:
- *                 type: string
- *               redirectUrl:
- *                 type: string
- *               displayTime:
- *                 type: string
+ *               $ref: '#/components/schemas/Message'
  *     responses:
  *       200:
  *         description: Message updated successfully
@@ -175,6 +122,7 @@
  */
 
 import prisma from "@/lib/db";
+import Message, { MessageType, MessageTypeDisplay } from "@/models/Message";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 
@@ -233,13 +181,11 @@ export default async function handler(
           return res.status(401).json({ messages: [], error: "Unauthorized" });
         }
 
-        if (!("messageId" in req.body))
+        if (!("id" in req.body))
           return res.status(400).json({ messages: [], error: "Bad request" });
 
-        const messageId = req.body.messageId;
-
         await prisma.message.delete({
-          where: { id: messageId },
+          where: { id: req.body.id },
         });
 
         return res
@@ -258,7 +204,7 @@ export default async function handler(
         }
 
         const {
-          messageId,
+          id,
           message,
           published,
           date,
@@ -270,7 +216,7 @@ export default async function handler(
         } = req.body;
 
         const findedMessage = await prisma.message.findUnique({
-          where: { id: messageId },
+          where: { id },
         });
 
         const updatedData: Message | any = {
@@ -288,7 +234,7 @@ export default async function handler(
         };
 
         await prisma.message.update({
-          where: { id: messageId },
+          where: { id },
           data: updatedData as any,
         });
 

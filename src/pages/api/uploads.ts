@@ -16,18 +16,7 @@
  *                 files:
  *                   type: array
  *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: string
- *                       title:
- *                         type: string
- *                       deleteHash:
- *                         type: string
- *                       url:
- *                         type: string
- *                       shown:
- *                         type: boolean
+ *                     $ref: '#/components/schemas/File'
  *       500:
  *         description: Internal server error
  *   post:
@@ -42,7 +31,7 @@
  *               name:
  *                 type: string
  *               file:
- *                 type: file
+ *                 $ref: '#/components/schemas/File'
  *     responses:
  *       200:
  *         description: File uploaded successfully
@@ -158,9 +147,11 @@
  *                   type: object
  *                 error:
  *                   type: string
+ *
  */
 import prisma from "@/lib/db";
 import { addFile, removeFile } from "@/lib/manage-cdn";
+import Galery from "@/models/File";
 import formidable from "formidable";
 import fs from "fs";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -172,8 +163,7 @@ export default async function handler(
 ) {
   switch (req.method) {
     case "GET":
-      const files = await prisma.galery.findMany();
-
+      const files: Galery = await prisma.galery.findMany();
       return res.status(200).json({ success: true, files });
       break;
     case "POST":

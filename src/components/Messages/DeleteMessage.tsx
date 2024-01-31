@@ -21,7 +21,7 @@ function DeleteMessage({
     try {
       await axios.delete(`/api/messages`, {
         data: {
-          messageId: id,
+          id,
         },
       });
       setInAction(false);

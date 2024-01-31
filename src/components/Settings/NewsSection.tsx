@@ -57,9 +57,12 @@ export default function NewsSection() {
           {newsArticles.map((article: any, index: number) => (
             <div
               key={index}
-              className="w-full h-full flex justify-center items-center bg-[#181818] rounded-lg"
+              className="w-full h-full flex justify-center items-center bg-[#181818] rounded-lg bg-center bg-cover"
+              style={
+                article.img ? { backgroundImage: `url(${article.img})` } : {}
+              }
             >
-              <p className="text-sm text-center w-fit h-fit p-2">
+              <p className="text-sm text-center w-fit h-fit p-2 drop-shadow-[0_0_1px_rgba(0,0,0,1)]">
                 {article.title}
               </p>
             </div>

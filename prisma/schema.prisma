@@ -93,3 +93,17 @@ model Galery {
   url        String
   shown      Boolean @default(false)
 }
+
+model Screen {
+  id                 ScreenId @id @map("_id")
+  title              String   @unique @default("EKRAN")
+  displayTimeSeconds Int      @default(10)
+  show               Boolean  @default(false)
+}
+
+enum ScreenId {
+  WEATHER
+  SPOTIFY
+  GALERY
+  NEWS
+}

@@ -21,18 +21,7 @@
  *                     images:
  *                       type: array
  *                       items:
- *                         type: object
- *                         properties:
- *                           id:
- *                             type: string
- *                           title:
- *                             type: string
- *                           deleteHash:
- *                             type: string
- *                           url:
- *                             type: string
- *                           shown:
- *                             type: boolean
+ *                         $ref: '#/components/schemas/File'
  *       500:
  *         description: Internal server error
  *   post:
