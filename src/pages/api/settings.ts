@@ -48,7 +48,7 @@ export default async function handler(
   switch (req.method) {
     case "GET":
       try {
-        const settings: Settings = await prisma.settings.findFirst({});
+        const settings = await prisma.settings.findFirst({});
         return res.status(200).json({ success: true, settings });
       } catch (error) {
         return res.status(500).json({ success: false, settings: {}, error });

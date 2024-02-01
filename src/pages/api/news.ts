@@ -46,7 +46,6 @@
  *         description: Internal server error
  */
 import prisma from "@/lib/db";
-import Settings from "@/types/Settings";
 import axios from "axios";
 import * as cheerio from "cheerio";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -59,7 +58,7 @@ export default async function handler(
   switch (req.method) {
     case "GET":
       try {
-        const settings: Settings = await prisma.settings.findFirst();
+        const settings = await prisma.settings.findFirst();
         const request = await axios.get("https://zstiojar.edu.pl/aktualnosci/");
         const $ = cheerio.load(request.data);
         const articles: { title: string; content: string; img: string }[] = [];

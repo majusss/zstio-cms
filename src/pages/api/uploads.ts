@@ -151,7 +151,6 @@
  */
 import prisma from "@/lib/db";
 import { addFile, removeFile } from "@/lib/manage-cdn";
-import Galery from "@/types/File";
 import formidable from "formidable";
 import fs from "fs";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -164,7 +163,7 @@ export default async function handler(
   switch (req.method) {
     case "GET":
       try {
-        const files: Galery = await prisma.galery.findMany();
+        const files = await prisma.galery.findMany();
         return res.status(200).json({ success: true, files });
       } catch (error) {
         return res.status(500).json({ success: false, files: {}, error });

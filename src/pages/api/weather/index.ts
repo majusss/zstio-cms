@@ -22,7 +22,6 @@
  */
 
 import prisma from "@/lib/db";
-import Settings from "@/types/Settings";
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -31,7 +30,7 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   res.setHeader("Cache-Control", "public, s-maxage=600");
-  const settings: Settings = await prisma.settings.findFirst();
+  const settings = await prisma.settings.findFirst();
   if (settings?.weatherApi) {
     const request = await axios.get(
       `https://api.openweathermap.org/data/2.5/weather?lat=50.018611&lon=22.679722&leng=pl&units=metric&appid=${settings.weatherApi}`,
