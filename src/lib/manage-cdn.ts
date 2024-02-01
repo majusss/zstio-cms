@@ -9,8 +9,8 @@ export const removeFile = async (id: string) => {
   }
 };
 
-export const addFile = async (title: string, filename: string, data: any) => {
-  const upload = await imgur.upload({ image: data, title: title });
+export const addFile = async (title: string, data: Buffer) => {
+  const upload = await imgur.upload({ image: data, title });
   if (!upload.success) throw new Error("Error uploading image to imgur");
   await prisma.galery.create({
     data: {

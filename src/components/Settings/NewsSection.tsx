@@ -1,10 +1,11 @@
 import { toastError, toastSuccess } from "@/lib/toasting";
+import { Article } from "@/types/Article";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function NewsSection() {
   const [isNewsShown, setIsNewsShown] = useState<boolean | null>(null);
-  const [newsArticles, setNewsArticles] = useState<[] | null>(null);
+  const [newsArticles, setNewsArticles] = useState<Article[] | null>(null);
 
   const getData = async () => {
     try {
@@ -20,7 +21,7 @@ export default function NewsSection() {
 
   const updateData = async () => {
     try {
-      const request = await axios.post("/api/news", {
+      await axios.post("/api/news", {
         showNews: isNewsShown,
       });
 
@@ -54,9 +55,9 @@ export default function NewsSection() {
       <h1 className="bold text-lg">News</h1>
       <div className="mb-2">
         <div className="grid grid-cols-imgs gap-2">
-          {newsArticles.map((article: any, index: number) => (
+          {newsArticles.map((article) => (
             <div
-              key={index}
+              key={article.title}
               className="w-full h-full flex justify-center items-center bg-[#181818] rounded-lg bg-center bg-cover"
               style={
                 article.img ? { backgroundImage: `url(${article.img})` } : {}

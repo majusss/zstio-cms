@@ -39,6 +39,7 @@
 import prisma from "@/lib/db";
 import Settings from "@/types/Settings";
 import { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth";
 
 export default async function handler(
   req: NextApiRequest,
@@ -48,13 +49,18 @@ export default async function handler(
     case "GET":
       try {
         const settings: Settings = await prisma.settings.findFirst({});
-        return res.status(200).json({ success: true, settings: settings });
+        return res.status(200).json({ success: true, settings });
       } catch (error) {
         return res.status(500).json({ success: false, settings: {}, error });
       }
-      break;
     case "POST":
       try {
+        const session = await getServerSession(req, res, {});
+
+        if (!session) {
+          return res.status(401).json({ messages: [], error: "Unauthorized" });
+        }
+
         const settings: Settings = {
           weatherApi: req.body.weatherApi || "",
           showWeather: req.body.showWeather || false,
@@ -62,9 +68,11 @@ export default async function handler(
           showHint: req.body.showHint || false,
           spotifyRefresh: req.body.spotifyRefresh || "",
           showSpotify: req.body.showSpotify || false,
-          showGallery: req.body.showGallery || false,
+          showGalery: req.body.showGallery || false,
           showNews: req.body.showNews || false,
         };
+
+        await prisma.settings.updateMany({ data: settings });
       } catch (error) {
         return res.status(500).json({ success: false, settings: {}, error });
       }

@@ -133,17 +133,16 @@ export default async function handler(
   switch (req.method) {
     case "GET":
       try {
-        const messages = await prisma.message.findMany({});
+        const messages: Message[] = await prisma.message.findMany({});
         return res.status(200).json({
           success: true,
           messages: req?.query?.force
             ? messages
-            : messages.filter((message: any) => message.published),
+            : messages.filter((message) => message.published),
         });
       } catch (error) {
         return res.status(500).json({ success: false, messages: [], error });
       }
-      break;
     case "PUT":
       try {
         const session = await getServerSession(req, res, {});
@@ -163,7 +162,7 @@ export default async function handler(
           displayTime: req.body.displayTime || null,
         };
 
-        await prisma.message.create({ data: message } as any);
+        await prisma.message.create({ data: message });
 
         return res.status(200).json({
           success: true,
@@ -172,7 +171,6 @@ export default async function handler(
       } catch (error) {
         return res.status(500).json({ success: false, messages: [], error });
       }
-      break;
     case "DELETE":
       try {
         const session = await getServerSession(req, res, {});
@@ -194,7 +192,6 @@ export default async function handler(
       } catch (error) {
         return res.status(500).json({ success: false, messages: [], error });
       }
-      break;
     case "PATCH":
       try {
         const session = await getServerSession(req, res, {});
@@ -219,7 +216,7 @@ export default async function handler(
           where: { id },
         });
 
-        const updatedData: Message | any = {
+        const updatedData: Message = {
           message: message !== findedMessage?.message && message,
           published: published !== findedMessage?.published && published,
           date: date !== findedMessage?.date && date,
@@ -235,7 +232,7 @@ export default async function handler(
 
         await prisma.message.update({
           where: { id },
-          data: updatedData as any,
+          data: updatedData,
         });
 
         return res
@@ -244,8 +241,6 @@ export default async function handler(
       } catch (error) {
         return res.status(500).json({ success: false, messages: [], error });
       }
-      break;
-
     default:
       return res.status(405).end();
   }

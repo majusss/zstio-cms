@@ -40,7 +40,8 @@ export default async function handler(
       temperature: request.data.main.temp,
       icons: [
         request.data.weather.map(
-          (w: any) => `https://openweathermap.org/img/wn/${w.icon}@4x.png`,
+          (w: { icon: string }) =>
+            `https://openweathermap.org/img/wn/${w.icon}@4x.png`,
         ),
       ],
     });

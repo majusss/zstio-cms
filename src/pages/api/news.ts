@@ -19,14 +19,7 @@
  *                     articles:
  *                       type: array
  *                       items:
- *                         type: object
- *                         properties:
- *                           title:
- *                             type: string
- *                           content:
- *                             type: string
- *                           img:
- *                             type: string
+ *                         $ref: '#/components/schemas/Article'
  *                     show:
  *                       type: boolean
  *       500:
@@ -86,7 +79,6 @@ export default async function handler(
       } catch (error) {
         return res.status(500).json({ success: false, news: {}, error });
       }
-      break;
     case "POST":
       try {
         const session = await getServerSession(req, res, {});
@@ -110,8 +102,6 @@ export default async function handler(
       } catch (error) {
         return res.status(500).json({ success: false, news: {}, error });
       }
-      break;
-
     default:
       return res.status(405).end();
   }

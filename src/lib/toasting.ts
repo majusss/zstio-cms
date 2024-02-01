@@ -1,6 +1,6 @@
-import { toast } from "react-toastify";
+import { ToastOptions, toast } from "react-toastify";
 
-const options: any = {
+const options: ToastOptions = {
   position: "bottom-right",
   autoClose: 4000,
   hideProgressBar: false,

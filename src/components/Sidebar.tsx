@@ -1,6 +1,5 @@
 import {
   ArrowLeftEndOnRectangleIcon,
-  Cog6ToothIcon,
   EnvelopeIcon,
   FolderIcon,
   HomeIcon,
@@ -46,7 +45,7 @@ export default function Sidebar() {
               <Link href="/dashboard/start">
                 <HomeIcon
                   className={`cursor-pointer relative flex justify-center rounded px-2 py-1.5 hover:text-gray-50 ${isActive(
-                    "/dashboard/start"
+                    "/dashboard/start",
                   )}`}
                 />
               </Link>
@@ -58,7 +57,7 @@ export default function Sidebar() {
                   <Link href={item.path}>
                     <item.icon
                       className={`cursor-pointer relative flex justify-center rounded px-2 py-1.5 hover:text-gray-50 ${isActive(
-                        item.path
+                        item.path,
                       )}`}
                     />
                   </Link>

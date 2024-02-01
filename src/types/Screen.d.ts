@@ -18,16 +18,17 @@
 
 import { Screen as _Screen } from "@prisma/client";
 
+/* eslint-disable */
+export enum ScreenId {
+  WEATHER,
+  SPOTIFY,
+  GALERY,
+  NEWS,
+}
+
 export default interface Screen extends _Screen {
   id: ScreenId;
   title: string;
   displayTimeSeconds: number;
   show: boolean;
-}
-
-enum ScreenId {
-  WEATHER,
-  SPOTIFY,
-  GALERY,
-  NEWS,
 }

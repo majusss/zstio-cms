@@ -5,33 +5,36 @@
  *     Settings:
  *       type: object
  *       properties:
+ *         id:
+ *           type: string
  *         weatherApi:
- *            type: string
+ *           type: string
  *         showWeather:
- *            type: boolean
+ *           type: boolean
  *         hintText:
- *            type: string
+ *           type: string
  *         showHint:
- *            type: boolean
+ *           type: boolean
  *         spotifyRefresh:
- *            type: string
+ *           type: string
  *         showSpotify:
- *            type: boolean
+ *           type: boolean
  *         showGallery:
- *            type: boolean
+ *           type: boolean
  *         showNews:
- *            type: boolean
+ *           type: boolean
  */
 
 import { Settings as _Settings } from "@prisma/client";
 
 export default interface Settings extends _Settings {
-  weatherApi?: string;
+  id?: string;
+  weatherApi: string | null;
   showWeather: boolean;
-  hintText?: string;
+  hintText: string | null;
   showHint: boolean;
-  spotifyRefresh?: string;
+  spotifyRefresh: string | null;
   showSpotify: boolean;
-  showGallery: boolean;
+  showGalery: boolean;
   showNews: boolean;
 }

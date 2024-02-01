@@ -1,11 +1,12 @@
 import { toastError, toastSuccess } from "@/lib/toasting";
+import File from "@/types/File";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import GaleryImage from "./Galery/GalertImage";
 
 export default function GalerySection() {
   const [isGaleryShown, setIsGaleryShown] = useState<boolean | null>(null);
-  const [galeryImages, setGaleryImages] = useState<[] | null>(null);
+  const [galeryImages, setGaleryImages] = useState<File[] | null>(null);
 
   const getData = useCallback(async () => {
     try {
@@ -21,7 +22,7 @@ export default function GalerySection() {
 
   const updateData = async () => {
     try {
-      const request = await axios.post("/api/galery", {
+      await axios.post("/api/galery", {
         showGalery: isGaleryShown,
       });
 
@@ -56,7 +57,7 @@ export default function GalerySection() {
       <h1 className="bold text-lg">Galery</h1>
       <div className="mb-2">
         <div className="grid grid-cols-imgs gap-2">
-          {galeryImages.map((article: any) => (
+          {galeryImages.map((article) => (
             <GaleryImage
               key={article.id}
               id={article.id}

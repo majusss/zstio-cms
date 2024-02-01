@@ -17,7 +17,6 @@ export default function GaleryImage({
 }) {
   const [title, setTitle] = useState(titleImg);
   const [show, setShow] = useState(showImg);
-  const [progrss, setProgrss] = useState<number | null>(null);
   return (
     <div className="flex flex-col rounded-lg w-52 h-52 bg-[#181818]">
       {/* eslint-disable-next-line @next/next/no-img-element */}

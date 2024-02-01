@@ -20,8 +20,8 @@ export default function HintSection() {
 
   const updateData = async () => {
     try {
-      const request = await axios.post("/api/hint", {
-        hintText: hintText,
+      await axios.post("/api/hint", {
+        hintText,
         showHint: isHintShown,
       });
 

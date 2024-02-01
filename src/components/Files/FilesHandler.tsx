@@ -1,7 +1,7 @@
 import { toastError } from "@/lib/toasting";
 import axios from "axios";
 import { useCallback, useState } from "react";
-import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
+import { useDropzone } from "react-dropzone";
 import useSWR from "swr";
 import AddFileComponent from "./AddFileComponent";
 import FilePreview from "./FilePreview";
@@ -18,17 +18,13 @@ export default function FilesHandler() {
     { file: File; blob: string }[]
   >([]);
 
-  const { data: hostedImgs, error } = useSWR("/api/uploads", fetchFiles, {
+  const { data: hostedImgs } = useSWR("/api/uploads", fetchFiles, {
     onError: (err) => toastError(err),
     refreshWhenHidden: false,
     refreshInterval: 1000,
   });
 
-  const onDrop: <T extends File>(
-    acceptedFiles: T[],
-    fileRejections: FileRejection[],
-    event: DropEvent,
-  ) => void = useCallback((acceptedFiles, rejectedFiles) => {
+  const onDrop = useCallback((acceptedFiles: File[]) => {
     acceptedFiles.forEach((file) => {
       setSelectedImages((prevState) => [
         ...prevState,

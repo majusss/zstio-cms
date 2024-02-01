@@ -10,7 +10,7 @@ export default function Start() {
 }
 
 export const getServerSideProps = async (context: any) => {
-  return authentication(context, ({ session }: any) => {
+  return authentication(context, ({ session }) => {
     return {
       props: {
         session,

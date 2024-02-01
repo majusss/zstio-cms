@@ -22,7 +22,7 @@ const messageDisplayTypes: { value: MessageTypeDisplay }[] = [
   { value: "BANNER" },
 ];
 
-function AddMessage({ reloadData }: { reloadData: any }) {
+function AddMessage({ reloadData }: { reloadData: () => Promise<void> }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedDisplayType, setSelectedDisplayType] = useState(
     messageDisplayTypes[0],
@@ -57,11 +57,11 @@ function AddMessage({ reloadData }: { reloadData: any }) {
 
     try {
       await axios.put("/api/messages", {
-        message: message,
+        message,
         type: selectedMessageType.value,
         displayType: selectedDisplayType.value,
         toUrl: displayUrl,
-        redirectUrl: redirectUrl,
+        redirectUrl,
         displayTime:
           hourFrom && hourTo
             ? {

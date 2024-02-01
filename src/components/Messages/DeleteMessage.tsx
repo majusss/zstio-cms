@@ -1,7 +1,7 @@
 import { toastError, toastSuccess } from "@/lib/toasting";
 import { Dialog, Transition } from "@headlessui/react";
 import axios from "axios";
-import { Fragment, useState } from "react";
+import { Dispatch, Fragment, SetStateAction, useState } from "react";
 
 function DeleteMessage({
   isOpen,
@@ -10,8 +10,8 @@ function DeleteMessage({
   id,
 }: {
   isOpen: boolean;
-  setIsOpen: any;
-  reloadData: any;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  reloadData: () => Promise<void>;
   id?: string;
 }) {
   const [inAction, setInAction] = useState(false);

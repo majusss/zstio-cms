@@ -1,6 +1,6 @@
 import { toastError, toastSuccess } from "@/lib/toasting";
 import axios from "axios";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 export default function FileUploader({
   image,
@@ -9,7 +9,14 @@ export default function FileUploader({
 }: {
   image: File;
   blob: string;
-  setSelectedImages: any;
+  setSelectedImages: Dispatch<
+    SetStateAction<
+      {
+        file: File;
+        blob: string;
+      }[]
+    >
+  >;
 }) {
   const [name, setName] = useState(image.name);
   const [progrss, setProgrss] = useState<number | null>(null);
@@ -44,7 +51,7 @@ export default function FileUploader({
                       },
                       onUploadProgress: (e) => {
                         setProgrss(
-                          Math.round((e.loaded * 100) / e?.total! || e.loaded),
+                          Math.round((e.loaded * 100) / (e?.total || 0)),
                         );
                       },
                     });

@@ -7,6 +7,7 @@ const APIDocumentUI = dynamic<{
   layout?: "sidebar" | "stacked";
   router?: "history" | "memory" | "hash" | "static";
 }>(
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   import("@stoplight/elements").then(({ API }) => API),
   {

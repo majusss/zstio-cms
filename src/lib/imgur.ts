@@ -1,10 +1,11 @@
+/* eslint-disable */
 import ImgurClient from "imgur";
 
 const imgurClientSingleton = () => {
   return new ImgurClient({
-  clientId: process.env.IMGUR_CLIENT_ID,
-  clientSecret: process.env.IMGUR_CLIENT_SECRET,
-});
+    clientId: process.env.IMGUR_CLIENT_ID,
+    clientSecret: process.env.IMGUR_CLIENT_SECRET,
+  });
 };
 
 declare global {

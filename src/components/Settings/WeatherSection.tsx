@@ -20,7 +20,7 @@ export default function WeatherSection() {
 
   const updateData = async () => {
     try {
-      const request = await axios.post("/api/weather/manage", {
+      await axios.post("/api/weather/manage", {
         weatherApi: apiText,
         showWeather: isWeatherShown,
       });

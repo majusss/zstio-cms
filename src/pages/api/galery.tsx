@@ -65,7 +65,6 @@ export default async function handler(
       } catch (error) {
         return res.status(500).json({ success: false, galery: {}, error });
       }
-      break;
     case "POST":
       try {
         const session = await getServerSession(req, res, {});
@@ -85,6 +84,5 @@ export default async function handler(
       } catch (error) {
         return res.status(500).json({ success: false, error });
       }
-      break;
   }
 }

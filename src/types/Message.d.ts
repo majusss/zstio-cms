@@ -30,7 +30,15 @@
  *            type: string
  */
 
-import { Message as _Message } from "@prisma/client";
+import { $Enums, Message as _Message } from "@prisma/client";
+
+export type MessageType = "INFO" | "UPDATE" | "WARNING" | "ERROR" | "SILENT";
+export type MessageTypeDisplay = "POPUP" | "BANNER";
+
+type TimeRange = {
+  from: string;
+  to: string;
+};
 
 export default interface Message extends _Message {
   id?: string;
@@ -43,11 +51,3 @@ export default interface Message extends _Message {
   redirectUrl: string | null;
   displayTime: TimeRange;
 }
-
-type MessageType = "INFO" | "UPDATE" | "WARNING" | "ERROR" | "SILENT";
-type MessageTypeDisplay = "POPUP" | "BANNER";
-
-type TimeRange = {
-  from: string;
-  to: string;
-};

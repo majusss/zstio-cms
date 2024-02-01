@@ -169,7 +169,6 @@ export default async function handler(
       } catch (error) {
         return res.status(500).json({ success: false, files: {}, error });
       }
-      break;
     case "POST":
       try {
         const session = await getServerSession(req, res, {});
@@ -181,14 +180,9 @@ export default async function handler(
         const form = formidable({});
         const [fields, filesIn] = await form.parse(req);
 
-        if (
-          filesIn.file &&
-          fields.name?.toString() &&
-          filesIn.file[0].originalFilename?.toString()
-        ) {
+        if (filesIn.file && fields.name?.toString()) {
           addFile(
             fields.name?.toString(),
-            filesIn.file[0].originalFilename?.toString(),
             await fs.readFileSync(filesIn.file[0].filepath),
           );
           return res.status(200).json({ suceess: true });
@@ -198,7 +192,6 @@ export default async function handler(
       } catch (error) {
         return res.status(500).json({ success: false, error });
       }
-      break;
     case "PATCH":
       try {
         const session = await getServerSession(req, res, {});
@@ -223,7 +216,6 @@ export default async function handler(
       } catch (error) {
         return res.status(500).json({ success: false, error });
       }
-      break;
     case "DELETE":
       try {
         const session = await getServerSession(req, res, {});

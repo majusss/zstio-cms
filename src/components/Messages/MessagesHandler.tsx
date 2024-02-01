@@ -33,7 +33,7 @@ export default function MessagesHandler() {
     visibility: boolean,
   ) => {
     try {
-      const req = await axios.patch("/api/messages", {
+      await axios.patch("/api/messages", {
         id,
         published: visibility,
       });
@@ -77,7 +77,7 @@ export default function MessagesHandler() {
           </div>
         ) : (
           <>
-            {!!data.length ? (
+            {data.length ? (
               <div className="hs-accordion-group">
                 {data?.map((message: Message) => (
                   <div key={message.id} className="mx-4 my-2">
