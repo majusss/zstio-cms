@@ -151,7 +151,7 @@
  */
 import prisma from "@/lib/db";
 import { addFile, removeFile } from "@/lib/manage-cdn";
-import Galery from "@/models/File";
+import Galery from "@/types/File";
 import formidable from "formidable";
 import fs from "fs";
 import { NextApiRequest, NextApiResponse } from "next";

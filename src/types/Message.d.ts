@@ -22,6 +22,11 @@
  *         redirectUrl:
  *            type: string
  *         displayTime:
+ *           type: object
+ *           properties:
+ *            from:
+ *             type: string
+ *           to:
  *            type: string
  */
 
@@ -36,7 +41,7 @@ export default interface Message extends _Message {
   displayType: $Enums.MessageTypeDisplay;
   toUrl: string | null;
   redirectUrl: string | null;
-  displayTime: TimeRanges;
+  displayTime: TimeRange;
 }
 
 type MessageType = "INFO" | "UPDATE" | "WARNING" | "ERROR" | "SILENT";

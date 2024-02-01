@@ -21,6 +21,7 @@
  *         description: Internal server error
  */
 
+import prisma from "@/lib/db";
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 

@@ -37,7 +37,7 @@
  *         description: Internal server error
  */
 import prisma from "@/lib/db";
-import Settings from "@/models/Settings";
+import Settings from "@/types/Settings";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(

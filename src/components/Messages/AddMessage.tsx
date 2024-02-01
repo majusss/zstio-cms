@@ -1,4 +1,5 @@
 import { toastError, toastSuccess } from "@/lib/toasting";
+import { MessageType, MessageTypeDisplay } from "@/types/Message";
 import { Dialog, Listbox, Transition } from "@headlessui/react";
 import {
   CheckIcon,
