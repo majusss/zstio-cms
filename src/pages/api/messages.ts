@@ -133,12 +133,12 @@ export default async function handler(
   switch (req.method) {
     case "GET":
       try {
-        const messages: Message[] = await prisma.message.findMany({});
+        const messages = await prisma.message.findMany({});
         return res.status(200).json({
           success: true,
           messages: req?.query?.force
             ? messages
-            : messages.filter((message) => message.published),
+            : messages.filter((message: Message) => message.published),
         });
       } catch (error) {
         return res.status(500).json({ success: false, messages: [], error });
