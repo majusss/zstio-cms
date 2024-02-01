@@ -26,8 +26,8 @@
  *           properties:
  *            from:
  *             type: string
- *           to:
- *            type: string
+ *            to:
+ *             type: string
  */
 
 import { $Enums, Message as _Message } from "@prisma/client";
