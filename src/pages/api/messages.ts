@@ -138,7 +138,7 @@ export default async function handler(
           success: true,
           messages: req?.query?.force
             ? messages
-            : messages.filter((message: Message) => message.published),
+            : messages.filter((message) => message.published),
         });
       } catch (error) {
         return res.status(500).json({ success: false, messages: [], error });
