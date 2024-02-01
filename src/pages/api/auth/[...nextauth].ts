@@ -2,7 +2,6 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
 
 import prisma from "@/lib/db";
-import { User } from "@prisma/client";
 import GitHubProvider from "next-auth/providers/github";
 
 export default NextAuth({
@@ -25,7 +24,8 @@ export default NextAuth({
   },
 
   callbacks: {
-    signIn: async ({ user }: User) => {
+    signIn: async ({ user }) => {
+      if (!user?.email) return false;
       return (
         (await prisma.access.findMany({ where: { email: user?.email } }))
           .length > 0
