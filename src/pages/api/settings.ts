@@ -46,20 +46,28 @@ export default async function handler(
 ) {
   switch (req.method) {
     case "GET":
-      const settingsGET: Settings = await prisma.settings.findMany({});
-      return res.status(200).json({ success: true, settings: settingsGET });
+      try {
+        const settings: Settings = await prisma.settings.findFirst({});
+        return res.status(200).json({ success: true, settings: settings });
+      } catch (error) {
+        return res.status(500).json({ success: false, settings: {}, error });
+      }
       break;
     case "POST":
-      const settingsPOST: Settings = {
-        weatherApi: req.body.weatherApi || "",
-        showWeather: req.body.showWeather || false,
-        hintText: req.body.hintText || "",
-        showHint: req.body.showHint || false,
-        spotifyRefresh: req.body.spotifyRefresh || "",
-        showSpotify: req.body.showSpotify || false,
-        showGallery: req.body.showGallery || false,
-        showNews: req.body.showNews || false,
-      };
+      try {
+        const settings: Settings = {
+          weatherApi: req.body.weatherApi || "",
+          showWeather: req.body.showWeather || false,
+          hintText: req.body.hintText || "",
+          showHint: req.body.showHint || false,
+          spotifyRefresh: req.body.spotifyRefresh || "",
+          showSpotify: req.body.showSpotify || false,
+          showGallery: req.body.showGallery || false,
+          showNews: req.body.showNews || false,
+        };
+      } catch (error) {
+        return res.status(500).json({ success: false, settings: {}, error });
+      }
       break;
   }
 }

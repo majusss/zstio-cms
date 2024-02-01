@@ -65,6 +65,7 @@
  *         description: Method not allowed
  */
 import prisma from "@/lib/db";
+import Settings from "@/types/Settings";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 
@@ -72,24 +73,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (!(await prisma.settings.findFirst())) {
-    await prisma.settings.create({
-      data: {
-        weatherApi: "",
-        showWeather: false,
-        hintText: "",
-        showHint: false,
-        spotifyRefresh: "",
-        showSpotify: false,
-        showGalery: false,
-        showNews: false,
-      },
-    });
-  }
   switch (req.method) {
     case "GET":
       try {
-        const settings = await prisma.settings.findFirst();
+        const settings: Settings = await prisma.settings.findFirst();
         return res.status(200).json({
           success: true,
           weather: {
@@ -119,7 +106,7 @@ export default async function handler(
           },
         });
 
-        const settings = await prisma.settings.findFirst();
+        const settings: Settings = await prisma.settings.findFirst();
 
         return res.status(200).json({
           success: true,

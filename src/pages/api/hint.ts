@@ -53,20 +53,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (!(await prisma.settings.findFirst())) {
-    await prisma.settings.create({
-      data: {
-        weatherApi: "",
-        showWeather: false,
-        hintText: "",
-        showHint: false,
-        spotifyRefresh: "",
-        showSpotify: false,
-        showGalery: false,
-        showNews: false,
-      },
-    });
-  }
   switch (req.method) {
     case "GET":
       try {

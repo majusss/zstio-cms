@@ -55,28 +55,36 @@ export default async function handler(
 ) {
   switch (req.method) {
     case "GET":
-      const settings = await prisma.settings.findFirst();
-      const galery = await prisma.galery.findMany();
-      return res.status(200).json({
-        success: true,
-        galery: { show: settings?.showGalery, images: galery },
-      });
+      try {
+        const settings = await prisma.settings.findFirst();
+        const galery = await prisma.galery.findMany();
+        return res.status(200).json({
+          success: true,
+          galery: { show: settings?.showGalery, images: galery },
+        });
+      } catch (error) {
+        return res.status(500).json({ success: false, galery: {}, error });
+      }
       break;
     case "POST":
-      const sessionPOST = await getServerSession(req, res, {});
+      try {
+        const session = await getServerSession(req, res, {});
 
-      if (!sessionPOST) {
-        return res.status(401).json({ hint: {}, error: "Unauthorized" });
+        if (!session) {
+          return res.status(401).json({ hint: {}, error: "Unauthorized" });
+        }
+
+        if (!req.body || !("showGalery" in req.body))
+          return res.status(400).json({ success: false, error: "Bad request" });
+
+        await prisma.settings.updateMany({
+          data: { showGalery: req.body.showGalery },
+        });
+
+        return res.status(200).json({ success: true });
+      } catch (error) {
+        return res.status(500).json({ success: false, error });
       }
-
-      if (!req.body || !("showGalery" in req.body))
-        return res.status(400).json({ success: false, error: "Bad request" });
-
-      await prisma.settings.updateMany({
-        data: { showGalery: req.body.showGalery },
-      });
-
-      return res.status(200).json({ success: true });
       break;
   }
 }
