@@ -1,5 +1,4 @@
 import { toastError, toastSuccess } from "@/lib/toasting";
-import { Article } from "@/types/Article";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -54,21 +53,27 @@ export default function NewsSection() {
     <div className="rounded-lg bg-[#202020] p-4 mb-4">
       <h1 className="bold text-lg">News</h1>
       <div className="mb-2">
-        <div className="grid grid-cols-imgs gap-2">
-          {newsArticles.map((article) => (
-            <div
-              key={article.title}
-              className="w-full h-full flex justify-center items-center bg-[#181818] rounded-lg bg-center bg-cover"
-              style={
-                article.img ? { backgroundImage: `url(${article.img})` } : {}
-              }
-            >
-              <p className="text-sm text-center w-fit h-fit p-2 drop-shadow-[0_0_1px_rgba(0,0,0,1)]">
-                {article.title}
-              </p>
-            </div>
-          ))}
-        </div>
+        {newsArticles.length !== 0 ? (
+          <div className="grid grid-cols-imgs gap-2">
+            {newsArticles.map((article) => (
+              <div
+                key={article.title}
+                className="w-full h-full flex justify-center items-center bg-[#181818] rounded-lg bg-center bg-cover"
+                style={
+                  article.img ? { backgroundImage: `url(${article.img})` } : {}
+                }
+              >
+                <p className="text-sm text-center w-fit h-fit p-2 drop-shadow-[0_0_1px_rgba(0,0,0,1)]">
+                  {article.title}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="w-full text-center p-2 my-1 bg-[#181818] rounded-lg">
+            BRAK ARTYKUŁÓW DO WYSWIETLENIA
+          </div>
+        )}
       </div>
       <div className="flex items-center">
         <button

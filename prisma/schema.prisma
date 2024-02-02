@@ -96,7 +96,8 @@ model Galery {
 
 model Screen {
   id                 ScreenId @id @map("_id")
-  title              String   @unique @default("EKRAN")
+  index              Int      @unique
+  title              String   @default("EKRAN")
   displayTimeSeconds Int      @default(10)
   show               Boolean  @default(false)
 }
@@ -106,4 +107,5 @@ enum ScreenId {
   SPOTIFY
   GALERY
   NEWS
+  SUBSTITUTIONS
 }

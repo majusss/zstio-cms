@@ -37,12 +37,10 @@ export default async function handler(
     );
     res.status(request.status).json({
       temperature: request.data.main.temp,
-      icons: [
-        request.data.weather.map(
-          (w: { icon: string }) =>
-            `https://openweathermap.org/img/wn/${w.icon}@4x.png`,
-        ),
-      ],
+      icons: request.data.weather.map(
+        (w: { icon: string }) =>
+          `https://openweathermap.org/img/wn/${w.icon}@4x.png`,
+      ),
     });
   } else {
     return res

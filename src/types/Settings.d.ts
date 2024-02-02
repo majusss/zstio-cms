@@ -25,9 +25,7 @@
  *           type: boolean
  */
 
-import { Settings as _Settings } from "@prisma/client";
-
-export default interface Settings extends _Settings {
+export interface Settings {
   id?: string;
   weatherApi: string | null;
   showWeather: boolean;

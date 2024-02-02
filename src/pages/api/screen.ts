@@ -37,6 +37,7 @@
  *         description: Internal server error
  */
 import prisma from "@/lib/db";
+import { Screen, ScreenId } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 
@@ -44,34 +45,46 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  const screenIds = Object.values(ScreenId);
+  for (const id of screenIds) {
+    const existingScreen = await prisma.screen.findFirst({
+      where: { id },
+    });
+    if (!existingScreen) {
+      await prisma.screen.create({
+        data: {
+          id,
+          index: screenIds.indexOf(id),
+        },
+      });
+    }
+  }
+
   switch (req.method) {
     case "GET":
       try {
-        const settings = await prisma.settings.findFirst({});
-        return res.status(200).json({ success: true, settings });
+        const screens = await prisma.screen.findMany({});
+        return res.status(200).json({ success: true, screens });
       } catch (error) {
-        return res.status(500).json({ success: false, settings: {}, error });
+        return res.status(500).json({ success: false, screens: {}, error });
       }
     case "POST":
       try {
         const session = await getServerSession(req, res, {});
 
         if (!session) {
-          return res.status(401).json({ messages: [], error: "Unauthorized" });
+          return res.status(401).json({ news: {}, error: "Unauthorized" });
         }
 
-        const settings: Settings = {
-          weatherApi: req.body.weatherApi || "",
-          showWeather: req.body.showWeather || false,
-          hintText: req.body.hintText || "",
-          showHint: req.body.showHint || false,
-          spotifyRefresh: req.body.spotifyRefresh || "",
-          showSpotify: req.body.showSpotify || false,
-          showGalery: req.body.showGallery || false,
-          showNews: req.body.showNews || false,
-        };
-
-        await prisma.settings.updateMany({ data: settings });
+        if (req?.body?.screens?.length === 0)
+          return res.status(400).json({ success: false, error: "Bad request" });
+        await prisma.screen.deleteMany({});
+        req.body.screens.forEach(async (screen: Screen) => {
+          await prisma.screen.create({
+            data: screen,
+          });
+        });
+        return res.status(200).json({ success: true });
       } catch (error) {
         return res.status(500).json({ success: false, settings: {}, error });
       }

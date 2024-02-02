@@ -1,6 +1,7 @@
-import GalerySection from "./GalerySection";
+import GalerySection from "./Galery/GalerySection";
 import HintSection from "./HintSection";
 import NewsSection from "./NewsSection";
+import ScreensSection from "./Screen/ScreensSection";
 import WeatherSection from "./WeatherSection";
 
 export default function SettingsHandler() {
@@ -10,6 +11,7 @@ export default function SettingsHandler() {
         <h1 className="text-xl p-2 font-semibold">ZARZĄDZANIE TV</h1>
       </div>
       <div className="px-4 py-2">
+        <ScreensSection />
         <HintSection />
         <WeatherSection />
         <NewsSection />

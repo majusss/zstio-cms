@@ -17,9 +17,7 @@
  *           type: boolean
  */
 
-import { Galery as _File } from "@prisma/client";
-
-export default interface File extends _File {
+export interface File {
   id: string;
   title: string;
   deleteHash: string;

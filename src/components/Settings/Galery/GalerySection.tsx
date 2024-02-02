@@ -1,8 +1,8 @@
 import { toastError, toastSuccess } from "@/lib/toasting";
-import File from "@/types/File";
+import { File } from "@/types/File";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import GaleryImage from "./Galery/GalertImage";
+import GaleryImage from "./GalertImage";
 
 export default function GalerySection() {
   const [isGaleryShown, setIsGaleryShown] = useState<boolean | null>(null);
@@ -24,6 +24,10 @@ export default function GalerySection() {
     try {
       await axios.post("/api/galery", {
         showGalery: isGaleryShown,
+      });
+
+      await axios.post("/api/uploads", {
+        files: galeryImages,
       });
 
       toastSuccess("Zaktualizowano dane");
@@ -56,18 +60,29 @@ export default function GalerySection() {
     <div className="rounded-lg bg-[#202020] p-4 mb-4">
       <h1 className="bold text-lg">Galery</h1>
       <div className="mb-2">
-        <div className="grid grid-cols-imgs gap-2">
-          {galeryImages.map((article) => (
-            <GaleryImage
-              key={article.id}
-              id={article.id}
-              title={article.title}
-              img={article.url}
-              shown={article.shown}
-              updateHostedImgs={getData}
-            />
-          ))}
-        </div>
+        {galeryImages.length !== 0 ? (
+          <div className="grid grid-cols-imgs gap-2">
+            {galeryImages
+              .sort((a, b) => a.id.localeCompare(b.id))
+              .map((image) => (
+                <GaleryImage
+                  key={image.id}
+                  image={image}
+                  updateImage={(newImage) => {
+                    setGaleryImages((prev) => {
+                      return prev!.map((img) =>
+                        img.id === newImage.id ? newImage : img,
+                      );
+                    });
+                  }}
+                />
+              ))}
+          </div>
+        ) : (
+          <div className="w-full text-center p-2 my-1 bg-[#181818] rounded-lg">
+            BRAK PLIKOW DO WYSWIETLENIA
+          </div>
+        )}
       </div>
       <div className="flex items-center">
         <button

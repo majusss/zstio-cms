@@ -20,18 +20,18 @@
  *       500:
  *         description: Internal server error
  *   post:
- *     summary: Upload a file
+ *     summary: Update files
  *     requestBody:
  *       required: true
  *       content:
- *         multipart/form-data:
+ *         application/json:
  *           schema:
  *             type: object
  *             properties:
- *               name:
- *                 type: string
- *               file:
- *                 $ref: '#/components/schemas/File'
+ *               files:
+ *                 type: array
+ *                 items:
+ *                   $ref: '#/components/schemas/File'
  *     responses:
  *       200:
  *         description: File uploaded successfully
@@ -62,24 +62,21 @@
  *                   type: object
  *                 error:
  *                   type: string
- *   patch:
- *     summary: Update a file
+ *   put:
+ *     summary: Upload a file
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               file:
  *                 type: string
- *               title:
- *                 type: string
- *               show:
- *                 type: boolean
+ *                 format: binary
  *     responses:
  *       200:
- *         description: File updated successfully
+ *         description: File deleted successfully
  *         content:
  *           application/json:
  *             schema:
@@ -94,19 +91,15 @@
  *             schema:
  *               type: object
  *               properties:
- *                 success:
- *                   type: boolean
  *                 error:
  *                   type: string
- *       401:
- *         description: Unauthorized
+ *       500:
+ *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 hint:
- *                   type: object
  *                 error:
  *                   type: string
  *   delete:
@@ -151,6 +144,7 @@
  */
 import prisma from "@/lib/db";
 import { addFile, removeFile } from "@/lib/manage-cdn";
+import { Galery } from "@prisma/client";
 import formidable from "formidable";
 import fs from "fs";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -177,6 +171,29 @@ export default async function handler(
         }
 
         const form = formidable({});
+        const [fields] = await form.parse(req);
+        if (!fields.files || fields.files?.length === 0)
+          return res.status(400).json({ error: "Bad request" });
+
+        await prisma.galery.deleteMany({});
+
+        fields.files.forEach(async (file: Galery) => {
+          await prisma.galery.create({ data: file });
+        });
+
+        return res.status(200).json({ suceess: true });
+      } catch (error) {
+        return res.status(500).json({ success: false, error });
+      }
+    case "PUT":
+      try {
+        const session = await getServerSession(req, res, {});
+
+        if (!session) {
+          return res.status(401).json({ hint: {}, error: "Unauthorized" });
+        }
+
+        const form = formidable({});
         const [fields, filesIn] = await form.parse(req);
 
         if (filesIn.file && fields.name?.toString()) {
@@ -188,30 +205,6 @@ export default async function handler(
         } else {
           return res.status(400).json({ error: "Bad request" });
         }
-      } catch (error) {
-        return res.status(500).json({ success: false, error });
-      }
-    case "PATCH":
-      try {
-        const session = await getServerSession(req, res, {});
-
-        if (!session) {
-          return res.status(401).json({ hint: {}, error: "Unauthorized" });
-        }
-
-        const form = formidable({});
-        const [fields] = await form.parse(req);
-        const { id, title, show } = fields;
-
-        if (!id || !title || !show)
-          return res.status(400).json({ success: false, error: "Bad request" });
-
-        await prisma.galery.updateMany({
-          where: { id: id.toString() },
-          data: { title: title.toString(), shown: show.toString() == "true" },
-        });
-
-        return res.status(200).json({ success: true });
       } catch (error) {
         return res.status(500).json({ success: false, error });
       }

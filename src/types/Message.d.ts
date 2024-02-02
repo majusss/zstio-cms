@@ -30,24 +30,22 @@
  *             type: string
  */
 
-import { $Enums, Message as _Message } from "@prisma/client";
-
 export type MessageType = "INFO" | "UPDATE" | "WARNING" | "ERROR" | "SILENT";
 export type MessageTypeDisplay = "POPUP" | "BANNER";
 
-type TimeRange = {
+export type TimeRange = {
   from: string;
   to: string;
 };
 
-export default interface Message extends _Message {
+export interface Message {
   id?: string;
-  message: string | null;
+  message?: string;
   published: boolean;
   date: Date;
-  type: $Enums.MessageType;
-  displayType: $Enums.MessageTypeDisplay;
-  toUrl: string | null;
-  redirectUrl: string | null;
-  displayTime: TimeRange;
+  type: MessageType;
+  displayType: MessageTypeDisplay;
+  toUrl?: string;
+  redirectUrl?: string;
+  displayTime?: TimeRange;
 }

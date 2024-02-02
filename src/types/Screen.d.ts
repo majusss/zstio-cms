@@ -16,8 +16,6 @@
  *            type: boolean
  */
 
-import { Screen as _Screen } from "@prisma/client";
-
 /* eslint-disable */
 export enum ScreenId {
   WEATHER,
@@ -26,8 +24,9 @@ export enum ScreenId {
   NEWS,
 }
 
-export default interface Screen extends _Screen {
+export interface Screen {
   id: ScreenId;
+  index: number;
   title: string;
   displayTimeSeconds: number;
   show: boolean;
