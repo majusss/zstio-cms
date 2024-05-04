@@ -5,34 +5,25 @@
  *     Settings:
  *       type: object
  *       properties:
- *         id:
- *           type: string
- *         weatherApi:
- *           type: string
- *         showWeather:
- *           type: boolean
  *         hintText:
- *           type: string
+ *           type: string | null
  *         showHint:
  *           type: boolean
- *         spotifyRefresh:
- *           type: string
  *         showSpotify:
  *           type: boolean
- *         showGallery:
+ *         showTimer:
  *           type: boolean
- *         showNews:
+ *         showWeather:
+ *           type: boolean
+ *         showHappyNumber:
  *           type: boolean
  */
 
 export interface Settings {
-  id?: string;
-  weatherApi: string | null;
-  showWeather: boolean;
   hintText: string | null;
   showHint: boolean;
-  spotifyRefresh: string | null;
   showSpotify: boolean;
-  showGalery: boolean;
-  showNews: boolean;
+  showTimer: boolean;
+  showWeather: boolean;
+  showHappyNumber: boolean;
 }

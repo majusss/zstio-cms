@@ -177,9 +177,11 @@ export default async function handler(
 
         await prisma.galery.deleteMany({});
 
-        fields.files.forEach(async (file: Galery) => {
-          await prisma.galery.create({ data: file });
-        });
+        JSON.parse(fields.files as unknown as string).forEach(
+          async (file: Galery) => {
+            await prisma.galery.create({ data: file });
+          },
+        );
 
         return res.status(200).json({ suceess: true });
       } catch (error) {

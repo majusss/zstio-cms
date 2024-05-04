@@ -1,4 +1,5 @@
 import { toastError, toastSuccess } from "@/lib/toasting";
+import { Article } from "@/types/Article";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -11,7 +12,7 @@ export default function NewsSection() {
       const request = await axios.get("/api/news");
 
       setIsNewsShown(request.data.news.show);
-      setNewsArticles(request.data.news.articles);
+      setNewsArticles(request.data.news);
     } catch (error) {
       toastError("Wystąpił błąd podczas poierania danych");
       console.error(error);
@@ -53,7 +54,7 @@ export default function NewsSection() {
     <div className="rounded-lg bg-[#202020] p-4 mb-4">
       <h1 className="bold text-lg">News</h1>
       <div className="mb-2">
-        {newsArticles.length !== 0 ? (
+        {newsArticles?.length ? (
           <div className="grid grid-cols-imgs gap-2">
             {newsArticles.map((article) => (
               <div

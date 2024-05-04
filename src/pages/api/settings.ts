@@ -14,7 +14,7 @@
  *                 success:
  *                   type: boolean
  *                 settings:
- *                   $ref: '#/components/schemas/Message'
+ *                   $ref: '#/components/schemas/Settings'
  *
  *       500:
  *         description: Internal server error
@@ -37,6 +37,7 @@
  *         description: Internal server error
  */
 import prisma from "@/lib/db";
+import { Settings } from "@/types/Settings";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 
@@ -44,10 +45,26 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  // await prisma.settings.create({ data: {} });
   switch (req.method) {
     case "GET":
       try {
-        const settings = await prisma.settings.findFirst({});
+        const settingsDB = (await prisma.settings.findFirst({})) || {
+          hintText: "",
+          showHint: false,
+          showSpotify: false,
+          showTimer: false,
+          showWeather: false,
+          showHappyNumber: false,
+        };
+        const settings: Settings = {
+          hintText: settingsDB.hintText,
+          showHint: settingsDB.showHint,
+          showSpotify: settingsDB.showSpotify,
+          showTimer: settingsDB.showTimer,
+          showWeather: settingsDB.showWeather,
+          showHappyNumber: settingsDB.showHappyNumber,
+        };
         return res.status(200).json({ success: true, settings });
       } catch (error) {
         return res.status(500).json({ success: false, settings: {}, error });
@@ -60,18 +77,44 @@ export default async function handler(
           return res.status(401).json({ messages: [], error: "Unauthorized" });
         }
 
-        const settings: Settings = {
-          weatherApi: req.body.weatherApi || "",
-          showWeather: req.body.showWeather || false,
-          hintText: req.body.hintText || "",
-          showHint: req.body.showHint || false,
-          spotifyRefresh: req.body.spotifyRefresh || "",
-          showSpotify: req.body.showSpotify || false,
-          showGalery: req.body.showGallery || false,
-          showNews: req.body.showNews || false,
+        const settingsDB = (await prisma.settings.findFirst({})) || {
+          hintText: "",
+          showHint: false,
+          showSpotify: false,
+          showTimer: false,
+          showWeather: false,
+          showHappyNumber: false,
         };
 
-        await prisma.settings.updateMany({ data: settings });
+        await prisma.settings.updateMany({
+          data: {
+            showWeather:
+              req.body.showWeather != null
+                ? req.body.showWeather
+                : settingsDB.showWeather,
+            hintText:
+              req.body.hintText != null
+                ? req.body.hintText
+                : settingsDB.hintText,
+            showHint:
+              req.body.showHint != null
+                ? req.body.showHint
+                : settingsDB.showHint,
+            showSpotify:
+              req.body.showSpotify != null
+                ? req.body.showSpotify
+                : settingsDB.showSpotify,
+            showTimer:
+              req.body.showTimer != null
+                ? req.body.showTimer
+                : settingsDB.showTimer,
+            showHappyNumber:
+              req.body.showHappyNumber != null
+                ? req.body.showHappyNumber
+                : settingsDB.showHappyNumber,
+          },
+        });
+        return res.status(200).json({ success: true });
       } catch (error) {
         return res.status(500).json({ success: false, settings: {}, error });
       }

@@ -11,10 +11,15 @@
  *           type: string
  *         img:
  *           type: string
+ *         date:
+ *           type: string
+ *           format: date
+ *
  */
 
 export interface Article {
   title: string;
   content: string;
   img: string;
+  date: string;
 }

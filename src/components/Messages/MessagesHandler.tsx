@@ -1,4 +1,5 @@
 import { toastError, toastSuccess } from "@/lib/toasting";
+import { Message } from "@/types/Message";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/24/outline";
 import axios from "axios";

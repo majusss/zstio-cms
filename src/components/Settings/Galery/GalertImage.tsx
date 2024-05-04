@@ -19,7 +19,9 @@ export default function GaleryImage({
       url: image.url,
       shown: show,
     });
-  }, [image.id, show, title, updateImage, image.url, image.deleteHash]);
+    // Maximum update depth exceeded.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [image.id, show, title, image.url, image.deleteHash]);
   return (
     <div className="flex flex-col rounded-lg w-52 h-52 bg-[#181818]">
       {/* eslint-disable-next-line @next/next/no-img-element */}

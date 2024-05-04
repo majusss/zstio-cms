@@ -1,3 +1,4 @@
+import DisplaySection from "./DisplaySection";
 import GalerySection from "./Galery/GalerySection";
 import HintSection from "./HintSection";
 import NewsSection from "./NewsSection";
@@ -12,6 +13,7 @@ export default function SettingsHandler() {
       </div>
       <div className="px-4 py-2">
         <ScreensSection />
+        <DisplaySection />
         <HintSection />
         <WeatherSection />
         <NewsSection />

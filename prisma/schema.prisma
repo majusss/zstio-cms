@@ -75,15 +75,15 @@ enum MessageType {
 }
 
 model Settings {
-  id             String  @id @default(auto()) @map("_id") @db.ObjectId
-  weatherApi     String?
-  showWeather    Boolean @default(false)
-  hintText       String?
-  showHint       Boolean @default(false)
-  spotifyRefresh String?
-  showSpotify    Boolean @default(false)
-  showGalery     Boolean @default(false)
-  showNews       Boolean @default(false)
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  weatherApi      String  @default("")
+  showWeather     Boolean @default(false)
+  hintText        String  @default("")
+  showHint        Boolean @default(false)
+  spotifyRefresh  String  @default("")
+  showSpotify     Boolean @default(false)
+  showTimer       Boolean @default(false)
+  showHappyNumber Boolean @default(false)
 }
 
 model Galery {

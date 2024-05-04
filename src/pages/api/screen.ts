@@ -1,8 +1,8 @@
 /**
  * @swagger
- * /api/settings:
+ * /api/screen:
  *   get:
- *     summary: Get settings
+ *     summary: Get screens
  *     responses:
  *       200:
  *         description: Success
@@ -13,19 +13,25 @@
  *               properties:
  *                 success:
  *                   type: boolean
- *                 settings:
- *                   $ref: '#/components/schemas/Message'
- *
+ *                 screens:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Screen'
  *       500:
  *         description: Internal server error
  *   post:
- *     summary: Update settings
+ *     summary: Update screens
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Settings'
+ *             type: object
+ *             properties:
+ *               screens:
+ *                 type: array
+ *                 items:
+ *                   $ref: '#/components/schemas/Screen'
  *     responses:
  *       200:
  *         description: Success

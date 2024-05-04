@@ -75,6 +75,11 @@ export default async function handler(
   switch (req.method) {
     case "GET":
       try {
+        const session = await getServerSession(req, res, {});
+
+        if (!session) {
+          return res.status(401).json({ weather: {}, error: "Unauthorized" });
+        }
         const settings = await prisma.settings.findFirst();
         return res.status(200).json({
           success: true,

@@ -25,7 +25,9 @@ export default function ScreenPreview({
       displayTimeSeconds: time,
       show,
     });
-  }, [screen.id, screen.index, show, time, title, updateScreen]);
+    // Maximum update depth exceeded.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [screen.id, screen.index, show, time, title]);
 
   return (
     <div className="flex flex-col rounded-lg w-52 h-52 bg-[#181818]">
@@ -35,7 +37,7 @@ export default function ScreenPreview({
           <button onClick={moveLeft} className="bg-[#202020] rounded-lg px-1">
             {"<"}
           </button>
-          <p className="px-4">{screen.index}</p>
+          <p className="px-4">{screen.show ? screen.index : "#"}</p>
           <button onClick={moveRight} className="bg-[#202020] rounded-lg px-1">
             {">"}
           </button>
