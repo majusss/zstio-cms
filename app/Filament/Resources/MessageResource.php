@@ -17,7 +17,9 @@ class MessageResource extends Resource
 {
     protected static ?string $model = Message::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-envelope';
+
+    protected static ?string $navigationGroup = 'Timetable';
 
     public static function form(Form $form): Form
     {
@@ -34,7 +36,8 @@ class MessageResource extends Resource
                         'WARNING' => 'WARNING',
                         'ERROR' => 'ERROR',
                         'SILENT' => 'SILENT',
-                    ]),
+                    ])
+                    ->searchable(),
                 Forms\Components\Select::make('displayType')
                     ->required()
                     ->options(
@@ -42,7 +45,8 @@ class MessageResource extends Resource
                             'POPUP' => 'POPUP',
                             'BANNER' => 'BANNER',
                         ]
-                    ),
+                    )
+                    ->searchable(),
                 Forms\Components\TextInput::make('toUrl'),
                 Forms\Components\TextInput::make('redirectUrl'),
             ]);
